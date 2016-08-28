@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vilbiz</title>
+    <meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+    <script src="jquery.min.js"></script>
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="wrapper main-view-container">
+      <center>
+        <input type="text" name="name" id="name" placeholder="name here">
+        <input type="text" name="title" id="title" placeholder="title here">
+        <input type="number" name="price" id="price" placeholder="price here">
+        <input type="text" name="desc" id="desc" placeholder="description here">
+        <input type="text" name="location" id="location" placeholder="location here">
+        <input type="number" name="mobile" id="mobile" placeholder="mobile here">
+        <input type="file" placeholder="select file" name="uploadfile" id="upload-icon" multiple>
+        <button onclick="submitData()">Submit</button>
+      </center>
+    </div>
+    <script>
+    var file, flist;
+    (function() {
+    var input = document.getElementById('upload-icon');
+    $(input).bind("change",function(evt) {
+        var i = 0, len = this.files.length, reader;
+        flist=this.files;
+        for (; i < len; i++) {
+        file = this.files[i];
+        var permittedFileType = ['png', 'jpg', 'jpeg','bmp', 'gif' ];
+        var fval = file.name.split('.').pop().toLowerCase();
+        var resultFile = validate_filetype(fval, permittedFileType);
+        if (resultFile === true) {
+          if (window.FileReader) {
+            reader = new FileReader();
+            reader.onloadend = function(e) {
+            };
+            reader.readAsDataURL(file);
+          }
+          var totalsz = 0;
+          totalsz = file.size;
+          if (totalsz > 512000) {
+            alert("Image max size allowed upto 500 KB");
+          }
+        }
+        else {
+          alert("Invalid image format.\n Try with png, jpg, bmp, gif formats.");
+        }
+      }
+    });
+    function validate_filetype(fext, ftype) {
+    	for ( var num in ftype) {
+    		if (fext == ftype[num])
+    			return true;
+    	}
+    	return false;
+    }
+    })();
+    function submitData(){
+      console.log(submitData1());
+    }
+    function submitData1(){
+      var formdata = new FormData();
+	        formdata.append('uploadimage', file);
+          formdata.append('title', $('#title').val());
+          formdata.append('type', $('#name').val());
+          formdata.append('location', $('#location').val());
+          formdata.append('price', $('#price').val());
+          formdata.append('desc', $('#desc').val());
+          return $.ajax({
+            url:'http://127.0.0.1:82/php/createproperties',
+            cache: false,
+            contentType: false,
+            processData: false,
+            type: 'POST',
+            data:formdata,
+            success:function(res){
+              //console.log(res);
+            }, error:function(err){
+              //console.log(err);
+            }
+          });
+    }
+    // function submitData(){alert(file.name+flist[0].name);
+    //   var obj={};
+    //       obj.name=$('#name').val();
+    //       obj.email=$('#email').val();
+    //       obj.password=$('#password').val();
+    //       obj.mobile=$('#mobile').val();
+    //       $.ajax({
+    //         type:'POST',
+    //         url:'http://127.0.0.1:82/createuser',
+    //         data:JSON.stringify(obj),
+    //          beforeSend:function(xhr){
+    //            xhr.setRequestHeader('Content-Type', 'application/json')
+    //          },
+    //         dataType:'json',
+    //         success:function(res){
+    //           console.log(res);
+    //         }, error:function(err){
+    //           console.log(err);
+    //         }
+    //       });
+    // }
+    </script>
+  </body>
+</html>

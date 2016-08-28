@@ -1,0 +1,251 @@
+<div class="home-container">
+  <div class="slider banner-slider">
+     <ul class="slides banner_slider">
+        <li class="banner_slider_img">
+          <img src="assets/images/banner1.jpg"> <!-- random image -->
+          <div class="caption left-align banner-text text-dark banner-pos-left-bottom">
+            <h3>Coffee Estates</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+        <li class="banner_slider_img">
+          <img src="assets/images/banner2.jpg"> <!-- random image -->
+          <div class="caption center-align banner-text text-dark banner-pos-left-top">
+            <h3>Agriculture Lands</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+        <li class="banner_slider_img">
+          <img src="assets/images/banner3.jpg"> <!-- random image -->
+          <div class="caption right-align banner-text text-dark banner-pos-center-center">
+            <h3>Rubber and Tea Estates</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+        <li class="banner_slider_img">
+          <img src="assets/images/banner4.jpg"> <!-- random image -->
+          <div class="caption center-align banner-text text-dark banner-pos-right-botm">
+            <h3>Houses and Plots</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+        <li class="banner_slider_img">
+          <img src="assets/images/banner5.jpg"> <!-- random image -->
+          <div class="caption right-align banner-text text-dark banner-pos-right-bottom">
+            <h3>Business</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+        <li class="banner_slider_img">
+          <img src="assets/images/banner6.jpg"> <!-- random image -->
+          <div class="caption left-align banner-text text-dark banner-pos-center-bottom">
+            <h3>Coffee &amp; Pepper Price</h3>
+            <h5 class="light">Here's our small slogan</h5>
+          </div>
+        </li>
+     </ul>
+  </div>
+
+  <div class="section bg-grey search-box">
+    <div class="container">
+      <div class="row no-margin">
+        <div class="col s12 l7 no-padding home-property">
+
+            <div class="input-field col s12 l5">
+              <select id="propType">
+                <option value="" disabled selected>Search Property</option>
+                <option value="coffee">Coffee Estate</option>
+                <option value="agriculture">Agriculture Land</option>
+                <option value="tea">Rubber &amp; Tea Estate</option>
+                <option value="house">House &amp; Plots</option>
+                <option value="business">Business</option>
+              </select>
+            </div>
+            <div class="input-field col s12 l5">
+              <select multiple id="locationList">
+              </select>
+            </div>
+            <div class="input-field col s12 l2 margin-top-15">
+              <button class="waves-effect waves-light btn bg-green" id="searchProp" onclick="searchProperties();">
+                <i class="jif-search-1"></i>
+              </button>
+            </div>
+  
+        </div>
+        <div class="col s12 l5 search-ad-id-block">
+          <form class="col s12 no-padding" name="searchByIdForm" onsubmit="return searchProperties(true);" method="post">
+            <div class="input-field margin-top-15">
+              <button class="waves-effect waves-light btn bg-green">
+                <i class="jif-search-1"></i>
+              </button>
+            </div>
+            <div class="input-field col s9 l8 no-padding search-ad-id">
+              <!-- <i class="jif-search prefix" style="font-size: 20px;line-height: 55px;"></i> -->
+                <input id="searchId" type="number" class="validate" required>
+                <label class="home-search-ad-label" for="searchId">Search with Ad ID<span class="text-red">*</span></label>
+              </div>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section bg-white sms-ad">
+    <div class="container sms-ad-in">
+      <div class="pepper-price-btn">
+        <a class="waves-effect waves-light btn margin-bottom-15 block-display">VIEW COFFEE &amp; PEPPER PRICE</a>
+        <div class="pepper_price_add">
+          <h5>COFFEE &amp; PEPPER PRICE SMS</h5>
+          <div class="smhr"></div>
+          <div>SMS your contact details to this number</div>
+          <div>9845421199</div>
+          <div>Get 5 days free trial SMS</div>
+        </div>
+      </div>
+      <div class="villbix-details">
+        <p><span class="text-green">Villbiz</span> - recognized as the talented and the best agencies in the Karnataka. We aim to create a meeting point where people across Karnataka can find properties. A place to share knowledge and experience, give and receive constructive and respectful critiques. We deal with Coffee Plantations in Sakleshpur, Mudigere, Somvarpet, Chikmaglur, Hassan, Madikeri and Mysore in Karnataka State of India.</p>
+        <p>We have offers on Coffee plantations ranging from 2 acres to 2000 acres. Some of the plantations are exclusive and can be used for setting up Resorts, Homestays, Spas, Villa plots, Golf courses and Holiday/Vacation cottages.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section bg-grey card-section">
+    <div class="container">
+      <h3 class="text-center text-dark">Why Villbiz?</h3>
+      <div class="green-orange-border-sm"></div>
+      <div class="row">
+        <div class="col s12">
+          <div class="villbiz-blocks">
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img1.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Coffee Estate<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">Coffee Estate<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img2.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Agriculture Land<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">Agriculture Land<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img3.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Rubber &amp; Tea Estate<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">Rubber &amp; Tea Estate<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img4.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">House &amp; Plots<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">House &amp; Plots<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img5.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Business<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">Business<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col s12 m6 l4">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img class="activator" src="assets/images/block_img6.png">
+                </div>
+                <div class="card-content">
+                  <span class="card-title activator grey-text text-darken-4">Coffee &amp; Pepper Price<i class="jif-ellipsis-vert right"></i></span>
+                  <div>
+                    <a href="price.html" class="waves-effect waves-light btn block-display">Find Properties</a>
+                  </div>
+                </div>
+                <div class="card-reveal card-reveal-sec">
+                  <span class="card-title grey-text text-darken-4">Coffee &amp; Pepper Price<i class="jif-cancel-1 right"></i></span>
+                  <div>Here is some more information about this product that is only revealed once clicked on.</div>
+                  <div class="card-reveal-btn"><a href="price.html" class="waves-effect waves-light btn block-display">Find Properties</a></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section bg-white about-us">
+    <div class="container text-center">
+      <h3 class="text-center text-dark">About Us</h3>
+      <div class="green-orange-border-sm"></div>
+      <div class="row">
+      <p>We are team who believe to make a difference by innovative ideas, services and adding value to the human life.Keeping our place green, Many companies says that the environment is at the top of their list, but we believe that actions speak louder than marketing slogans.</p>
+      <p>Our aim is to be the First Selection for the customers in their chosen verticals. We work on the philosophy of Focus and Development that helps us to compete on the strength of our aim. Our path breaking Ideas and Innovations made our customers improve time-to market and realize quick Return on their Investment.</p>
+      <p>We are proven for being the best. We deal with properties like Coffee Estates, Rubber and Tea Estates, Agriculture Lands, Industrial Lands, Residential Plots, Commercial Plots, Houses, Commercial Buildings and Business for Sale across Karnataka.</p>
+      <p>We set up Hotels, Cafe, Petrol pumps and Hospitals. We have suitable lands for Dairy farm, Goat farm, Poultry farm, Green house, Good scenic view lands for Resorts and Home stays.</p>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="scripts/main.js"></script>

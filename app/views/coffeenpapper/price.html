@@ -1,0 +1,364 @@
+	<div class="section bg-white price-container" ng-controller="PriceController">
+		<div class="pricingcontainer">
+			<div class="logedin-user">
+				<i class="jif-user text-green" style="margin-right: 5px; font-size: 14px;"></i><a class='dropdown-button' href='javascript:void(0)' data-activates='logedinuser'>User Name<i class="jif-down-open dropdown-user"></i></a>
+
+				<!-- Dropdown Structure -->
+				<ul id='logedinuser' class='dropdown-content logedinuser-dropdown'>
+					<li><a href="#change-password-modal" class="modal-trigger"><i class="jif-cog"></i>Settings</a></li>
+				    <li class="divider"></li>
+				    <li><a href="javascript:void(0)"><i class="jif-off"></i>Logout</a></li>
+				</ul>
+			</div>
+			<div class="row">
+				<div class="col s12">
+					<div class="col s12 l9">
+						<h4 class="text-center text-dark">COFFEE &amp; PEPPER PRICE</h4>
+						<hr>
+						<div class="price-tables">
+							<div class="price-date">30/06/2016</div>
+							<label class="price-switch">
+								<input type="checkbox" onchange="loadPrice(this);">
+								<div class="price-switch-slider round"></div>
+								<span class="price-coffee">COFFEE</span>
+								<span class="price-pepper">PEPPER</span>
+							</label>
+							<table id="coffeeTable" class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						        <thead>
+						          <tr>
+						              <th data-field="trader">Trader</th>
+						              <th data-field="city">City</th>
+						              <th data-field="ap">AP</th>
+						              <th data-field="ac">AC</th>
+						              <th data-field="rp">RP</th>
+						              <th data-field="rc">RC</th>
+						          </tr>
+						        </thead>
+
+						        <tbody id="CoffeePrice">
+						          
+						        </tbody>
+						    </table>
+						    <table id="pepperTable" class="bordered highlight striped responsive-table pepper-price-table price-tab" style="display:none;">
+						        <thead>
+						          <tr>
+						              <th data-field="trader">Trader</th>
+						              <th data-field="city">City</th>
+						              <th data-field="ap">Quantity</th>
+						              <th data-field="ac">Brand</th>
+						              <th data-field="rp">Price</th>
+						          </tr>
+						        </thead>
+						        <tbody id="PepperPrice">
+						        </tbody>
+						    </table>
+						</div>
+					</div>
+					<div class="col s12 l3 price-news">
+						<div class="col s12 bg-grey price-closing-block">
+							<h5>Closing Price</h5>
+							<table class="centered bordered highlight striped responsive-table coffee-price-table price-tab closing-price-tab">
+						        <thead>
+						          <tr>
+						              <th data-field="id">Name</th>
+						              <th data-field="name">Price</th>
+						              <th data-field="price">Change</th>
+						              <th data-field="price">Chg%</th>
+						          </tr>
+						        </thead>
+						        <tbody id="closePrice">
+						          
+						        </tbody>
+						      </table>
+						</div>
+						<div class="col s12 price-news-block" onload="getNews();">
+						<h5>News</h5>
+						<p class="no-margin" id="newsList">Pepper markets ruled steady following no trading activities due to non-arrival. No sellers were forthcoming at current terminal market rates. They were quoting ₹705 and ₹710 a kg, while buyers were at ₹700 a kg. Processors were reportedly buying exchange released pepper and farm grade pepper directly from primary markets.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+<!-- Login Modal Structure -->
+<div id="login-modal" class="modal login-sm-modal">
+	<div class="modal-content login-box">
+		<i class="jif-cancel-1 modal-close-btn modal-close"></i>
+		<form class="col s12" name="loginForm" onsubmit="return login();" method="post">
+			<div class="col s12 no-padding">
+				<h4 class="text-center">Log In</h4>
+				<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="number" class="validate no-margin" id="loginusername" required minlength="10" maxlength="10">
+			          <label for="loginusername">Mobile Number<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" id="loginpassword" required>
+			          <label for="loginpassword">Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+		     	</div>
+		      	<div class="row no-margin">
+			      	<div class="left forgot-pwd-section no-padding">
+			      		<a href="#forgot-pwd-modal" class="text-grey">Forgot Password?</a>
+			      	</div>
+			      	<div class="right forgot-pwd-section">
+			      		Don't have an Account? <a href="javascript:showSignupForm();" class="text-green signup-link">Sign Up</a>
+			      	</div>
+		      	</div>
+			</div>
+			</form>
+			<form class="col s12" name="resetForm" onsubmit="return userResetPassword();" method="post">
+			<div class="col s12 no-padding signup-otp-box hide">
+				<h4 class="text-center">Reset Password</h4>
+				<div class="row">
+			        <div class="input-field col s12">
+			          <input type="number" class="validate no-margin" required>
+			          <label for="first_name">Mobile Number<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+			    <div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+			    </div>
+			    <div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Don't have an Account? <a href="javascript:showSignup()" class="text-green signup-link">Sign Up</a>
+			      	</div>
+		      	</div>
+			</div>
+			</form>
+			<form class="col s12" name="otpResetForm" onsubmit="return passwordReset();" method="post">
+			<div class="col s12 no-padding signup-otp-box hide">
+				<h4 class="text-center">Reset Password</h4>
+				<div class="row no-margin">
+			        <div class="input-field col s12">
+			          <input type="number" class="validate no-margin" required>
+			          <label for="first_name">Enter the OTP sent at the given mobile number<span class="text-red">*</span></label>
+			        </div>
+			        <div class="text-grey resend-otp text-green">Resend OTP?</div>
+			    </div>
+			    <div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+			    </div>
+			    <div class="row">
+			      	<div class="right forgot-pwd-section">
+			      		Don't have an Account? <a href="javascript:void(0)" class="text-green signup-link">Sign Up</a>
+			      	</div>
+		      	</div>
+			</div>
+			</form>
+			<form class="col s12" name="resetPassForm" onsubmit="return userSetPassword();" method="post">
+			<div class="col s12 no-padding signup-otp-box hide">
+				<h4 class="text-center">Reset Password</h4>
+				<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="first_name">New Password<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="first_name">Re Enter Password<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+			    <div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+			    </div>
+			    <div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Don't have an Account? <a href="javascript:void(0)" class="text-green signup-link">Sign Up</a>
+			      	</div>
+		      	</div>
+			</div>
+			</form>
+			<div class="col s12 no-padding signup-otp-box hide">
+				<h5 class="text-center">Congratulations!</h5>
+				<h6 class="text-center">Your password has been reset.</h6>
+				<h6 class="text-center forgor-pwd-success">
+					<a class="text-green" href="javascript:void(0)">Login</a>
+				</h6>
+			</div>
+	</div>
+</div>
+
+
+<!-- Signup Modal Structure -->
+<div id="signup-modal" class="modal sign-sm-modal">
+	<div class="modal-content login-box">
+		<i class="jif-cancel-1 modal-close-btn modal-close"></i>
+		<form class="col s12" name="signupForm" onsubmit="return userSignup();" method="post" id="signupForm">
+			<div class="col s12 no-padding">
+				<h4 class="text-center text-green">Sign Up</h4>
+				<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="text" class="validate no-margin" required name="fullname" id="fullname">
+			          <label for="fullname">Name<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+		      	<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="number" class="validate no-margin" name="mobilenumber" required id="mobilenumber" minlength="10" maxlength="10">
+			          <label for="mobilenumber">Mobile Number<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="email" class="validate no-margin" name="email" id="email">
+			          <label for="email">Email</label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" name="password" required id="password">
+			          <label for="password">Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			        	<input type="password" class="validate no-margin" name="confirmpassword" id="confirmpassword" required>
+			          	<label for="confirmpassword">Confirm Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+		      	</div>
+		      	<div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      	</div>
+				</div>
+			</div>
+			</form>
+			<form class="col s12" name="otpSignupForm" onsubmit="return userOtpApproval();" method="post" id="userOtpApproval" style="display:none;">
+			<div class="col s12 no-padding signup-otp-box">
+				<h4 class="text-center text-green">Sign Up</h4>
+				<div class="row no-margin">
+			        <div class="input-field col s12">
+			          <input type="number" class="validate no-margin" id="mobOtp" required>
+			          <label for="mobOtp">Enter the OTP sent at the given mobile number<span class="text-red">*</span></label>
+			        </div>
+			        <div class="text-grey resend-otp text-green" onclick="reSentOtp()">Resend OTP?</div>
+			    </div>
+			    <div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+			    </div>
+			    <div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      	</div>
+				</div>
+			</div>
+			</form>
+			<form class="col s12" name="otpSignupForm" onsubmit="return setPassword();" method="post">
+			<div class="col s12 no-padding signup-otp-box hide">
+				<h4 class="text-center text-green">Create Password</h4>
+				<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="first_name">New Password<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+			    <div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="first_name">Re Enter Password<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+			    <div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+			    </div>
+			    <div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      	</div>
+				</div>
+			</div>
+			</form>
+			<div class="col s12 no-padding signup-otp-box hide" id="signupsucess">
+				<h5 class="text-center">Congratulations!</h5>
+				<h6 class="text-center">Your Account has been created.</h6>
+				<h6 class="text-center forgor-pwd-success">
+					<a class="text-green" href="javascript:showLoginForm();">Login</a>
+				</h6>
+			</div>
+	</div>
+</div>
+
+<!-- Change Password Modal -->
+<div id="change-password-modal" class="modal sign-sm-modal">
+	<div class="modal-content login-box">
+		<h4 class="text-center text-green">Account Settings</h4>
+		<i class="jif-cancel-1 modal-close-btn modal-close"></i>
+		<form class="col s12">
+			<div class="col s12 no-padding">
+				<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="text" class="validate no-margin" value="Anusha" required>
+			          <label for="name">Name<span class="text-red">*</span></label>
+			        </div>
+			    </div>
+		      	<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input disabled type="number" class="validate no-margin" value="8867571297">
+			          <label for="mobilenumber">Mobile Number</label>
+			        </div>
+		      	</div>
+		      	<div class="row margin-bottom-10">
+			        <div class="input-field col s12">
+			          <input type="email" class="validate no-margin" value="anusha@gmail.com">
+			          <label for="email">Email</label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="password">Current Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="password">New Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row">
+			        <div class="input-field col s12">
+			          <input type="password" class="validate no-margin" required>
+			          <label for="confirmpassword">Re-type New Password<span class="text-red">*</span></label>
+			        </div>
+		      	</div>
+		      	<div class="row margin-bottom-10">
+			      	<div class="input-field col s12">
+			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+			      	</div>
+		      	</div>
+			</div>
+			<div class="row no-margin">
+			      	<div class="right forgot-pwd-section">
+			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      	</div>
+				</div>
+		</form>
+	</div>
+</div>
+<script src="scripts/price.js"></script>

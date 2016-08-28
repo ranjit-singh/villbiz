@@ -1,0 +1,412 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vilbiz</title>
+    <meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+    <link rel="shortcut icon" href="../assets/images/fav.png">
+    <link href="../assets/fonts/css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/materialize.css">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+  </head>
+  <body>
+<div class="wrapper admin-wrapper">
+	<div class="navbar-fixed main-header">
+		<nav>
+			<div class="nav-wrapper">
+				<a href="index.html" class="brand-logo"><img src="../assets/images/logo.png"></a>
+				<a href="#" data-activates="mobile-demo" class="button-collapse mob-menu-btn-sec">
+					<i class="jif-menu-1 right mob-menu-btn"></i>
+				</a>
+				<ul class="right">
+					<li><a class="no-margin"><i class="jif-off text-red" onclick="logOut()"></i></a></li>
+				</ul>
+				<ul class="tabs admin-tabs right hide-on-med-and-down">
+				  <li class="tab col s3"><a class="active" href="#tab1">Properties</a></li>
+					<li class="tab col s3" onclick="getCoffeePrice()"><a href="#tab2">Coffee Price</a></li>
+					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
+					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
+					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+				</ul>
+				<ul class="tabs admin-tabs side-nav mob-side-menu-slider admin-mob-menu" id="mobile-demo">
+				 	<li class="tab col s3"><a class="active" href="#tab1">Properties</a></li>
+					<li class="tab col s3" onclick="getCoffeePrice()"><a href="#tab2">Coffee Price</a></li>
+					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
+					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
+					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+				</ul>
+			</div>
+		</nav>
+	</div>
+
+	<div class="section" id="tab1">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-tab-box no-padding">
+					<form name="propertiesForm" class="col s12 admin-form no-padding" onsubmit="return addProperties();" method="post">
+						<div class="col s12 l6 padding-right-20">
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-choose-property">
+									<select id="propType">
+										<option value="" disabled selected>Choose Property</option>
+										<option value="coffee">Coffee Estate</option>
+										<option value="agriculture">Agriculture Land</option>
+										<option value="tea">Rubber &amp; Tea Estate</option>
+										<option value="house">House &amp; Plots</option>
+										<option value="business">Business</option>
+									</select>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="title" type="text" class="validate" required>
+									<label for="title">Title</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="price" type="text" class="validate" required>
+									<label for="price">Price</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="location" type="text" class="validate" required>
+									<label for="location">Location</label>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 l6 padding-left-20">
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<textarea id="description" class="materialize-textarea" required></textarea>
+									<label for="description">Description</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="file-field input-field col s12">
+									<div class="btn">
+										<span>Images</span>
+										<input type="file" name="uploadfile[]" id="upload-icon" multiple>
+									</div>
+									<div class="file-path-wrapper">
+										<input class="file-path validate" type="text" placeholder="Upload one or more files">
+									</div>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-add-btn">
+									<input type="submit" class="waves-effect waves-light btn right" value="Add Property">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th data-field="id" width="5%">Ad Id</th>
+								<th data-field="type" width="10%">Type</th>
+								<th data-field="title" width="15%">Title</th>
+								<th data-field="price" width="10%">Price</th>
+								<th data-field="location" width="10%">Location</th>
+								<th data-field="desc" width="25%">Description</th>
+								<th data-field="img" width="10%">Images</th>
+								<th data-field="action" width="15%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="listProp">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="tab2">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-tab-box no-padding">
+					<form name="coffeePriceForm" class="col s12 admin-form no-padding" onsubmit="return addCoffeePrice();" method="post">
+						<div class="col s12 l6 padding-right-20">
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-choose-property">
+									<select>
+										<option value="1" selected>Coffee Price</option>
+									</select>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="trader" type="text" class="validate" required>
+									<label for="trader">Trader</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="city" type="text" class="validate" required>
+									<label for="city">City</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="ap" type="text" class="validate" required>
+									<label for="ap">AP</label>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 l6 padding-left-20">
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="ac" type="text" class="validate" required>
+									<label for="ac">AC</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="rp" type="text" class="validate" required>
+									<label for="rp">RP</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="rc" type="text" class="validate" required>
+									<label for="rc">RC</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-add-btn">
+									<input type="submit" class="waves-effect waves-light btn right" value="Add Coffee Price">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th data-field="id" width="5%">SNo</th>
+								<th data-field="title" width="20%">Trader</th>
+								<th data-field="price" width="15%">City</th>
+								<th data-field="location" width="10%">AP</th>
+								<th data-field="desc" width="15%">AC</th>
+								<th data-field="img" width="10%">RP</th>
+								<th data-field="img" width="10%">RC</th>
+								<th data-field="action" width="15%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="coffeePriceList">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="tab3">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-tab-box no-padding">
+					<form name="pepperPriceForm" class="col s12 admin-form no-padding" onsubmit="return addPepperPrice();" method="post">
+						<div class="col s12 l6 padding-right-20">
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-choose-property">
+									<select>
+										<option value="1" selected>Pepper Price</option>
+									</select>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="ptrader" type="text" class="validate" required>
+									<label for="ptrader">Trader</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="pcity" type="text" class="validate" required>
+									<label for="pcity">City</label>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 l6 padding-left-20">
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="quantity" type="text" class="validate" required>
+									<label for="quantity">Quantity</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="brand" type="text" class="validate" required>
+									<label for="brand">Brand</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="pprice" type="text" class="validate" required>
+									<label for="pprice">Price</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-add-btn">
+									<input type="submit" class="waves-effect waves-light btn right" value="Add Pepper Price">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th data-field="id" width="5%">SNo</th>
+								<th data-field="title" width="15%">Trader</th>
+								<th data-field="price" width="10%">City</th>
+								<th data-field="location" width="10%">Quantity</th>
+								<th data-field="desc" width="35%">Brand</th>
+								<th data-field="img" width="10%">Price</th>
+								<th data-field="action" width="15%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="pepperPriceList">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="tab4">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-tab-box no-padding">
+					<form name="closePriceForm" class="col s12 admin-form no-padding" onsubmit="return addCloseingPrice();" method="post">
+						<div class="col s12 l6 padding-right-20">
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-choose-property">
+									<select>
+										<option value="1" selected>Closing Price</option>
+									</select>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="chname" type="text" class="validate" required>
+									<label for="chname">Name</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="chprice" type="text" class="validate" required>
+									<label for="chprice">Price</label>
+								</div>
+							</div>
+						</div>
+						<div class="col s12 l6 padding-left-20">
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="clchange" type="text" class="validate" required>
+									<label for="clchange">Change</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<input id="changepercent" type="text" class="validate" required>
+									<label for="changepercent">Chg%</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-add-btn">
+									<input type="submit" class="waves-effect waves-light btn right" value="Add Closing Price">
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th data-field="id" width="5%">SNo</th>
+								<th data-field="title" width="25%">Name</th>
+								<th data-field="price" width="10%">Price</th>
+								<th data-field="location" width="10%">Change</th>
+								<th data-field="desc" width="35%">Chg%</th>
+								<th data-field="action" width="15%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="closePriceList">
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="tab5">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-tab-box no-padding">
+					<form name="newsForm" class="col s12 admin-form no-padding" onsubmit="return addNews();" method="post">
+						<div class="col s12 l6 padding-left-20">
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-choose-property">
+									<select>
+										<option value="1" selected>News</option>
+									</select>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12">
+									<textarea id="newsdescription" class="materialize-textarea" required></textarea>
+									<label for="newsdescription">News</label>
+								</div>
+							</div>
+							<div class="row no-margin">
+								<div class="input-field col s12 admin-add-btn">
+									<input type="submit" class="waves-effect waves-light btn right" value="Add News">
+								</div>
+							</div>
+						</div>
+						<div class="col s12 l6 padding-right-20">
+						</div>
+					</form>
+				</div>
+
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th data-field="id" width="5%">SNo</th>
+								<th data-field="title" width="70%">News</th>
+								<th data-field="action" width="25%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="newsList">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="loader-wrapper">
+<div id="loader"></div>
+</div>
+<script src="../scripts/jquery.min.js"></script>
+<script src="../scripts/materialize.min.js"></script>
+<script src="../scripts/cookies.js"></script>
+<script src="../scripts/common.js"></script>
+<script src="../scripts/admin.js"></script>
+</body>
+</html>
