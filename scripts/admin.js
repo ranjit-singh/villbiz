@@ -55,7 +55,7 @@ function validate_filetype(fext, ftype) {
           for(var i in flist){
             formdata.append('uploadimage[]', flist[i]);
           }
-	        
+          
           formdata.append('title', $('#title').val());
           formdata.append('type', $('#propType').val());
           formdata.append('location', $('#location').val());
@@ -106,6 +106,7 @@ function validate_filetype(fext, ftype) {
               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#coffeePriceList').html(htmlList);
+       $('.modal-trigger').leanModal();
     }
     function getPepperPrice(){
       villbizApp.callGet('/php/pepper/price', pepperCallBack);
@@ -132,6 +133,7 @@ function validate_filetype(fext, ftype) {
               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#pepperPriceList').html(htmlList);
+       $('.modal-trigger').leanModal();
     }
 
     function addCloseingPrice(){
@@ -157,6 +159,7 @@ function validate_filetype(fext, ftype) {
                +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#closePriceList').html(htmlList);
+       $('.modal-trigger').leanModal();
     }
 
     function addNews(){
@@ -178,6 +181,7 @@ function validate_filetype(fext, ftype) {
       htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#newsList').html(htmlList);
+       $('.modal-trigger').leanModal();
     }
 
     function logOut(){

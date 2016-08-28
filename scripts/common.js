@@ -69,11 +69,11 @@ var villbizApp = (function () {
                         }
                   });
         };
-        apiService.setData=function(key, value){
-            apiService.key=value;
+        apiService.setData=function(keyName, value){
+            apiService[keyName]=value;
         };
-        apiService.getData=function(key){
-            return apiService.key;
+        apiService.getData=function(keyName){
+            return apiService[keyName];
         };  
     };
 
