@@ -107,24 +107,23 @@ require 'routes.php';
     $loginInfo = json_decode(file_get_contents("php://input")); 
     $password=md5($loginInfo->password);
     try {
-    $sql = "select * from user_signup where email='".$loginInfo->userName."' || mobile='".$loginInfo->userName."' && password='".$password."' && status='ACTIVE'";
+    $sql = "select id,name,email,mobile,isAdmin from user_signup where email='".$loginInfo->userName."' || mobile='".$loginInfo->userName."' && password='".$password."' && status='ACTIVE'";
     $db = getConnection();
     $stmt = $db->query($sql);
     $users = $stmt->fetchAll(PDO::FETCH_OBJ);
     $count  = count($users);
     $db = null;
+    $timeout = 36000 * 1000 + time();
     if($count > 0){
-      $a = session_id();
-      //$sessionId = session_id();
-      //$timeout = 36000 * 1000 + time();
-      //setcookie("PHPSESSID", $sessionId, $timeout, "/", 'villbiz.com', false, false);
       if($loginInfo->isAdmin=='admin' && $users[0]->isAdmin==$loginInfo->isAdmin){
         if(empty($a)) session_start();
-        echo '{"users": "You are successfully loggedin!", "status":true}';
+        setcookie("role", $loginInfo->isAdmin, $timeout, "/", 'villbiz.com', false, false);
+        echo '{"users": "You are successfully loggedin!", "status":true, "profile":'.json_encode($users[0]).'}';
       }
       else if($loginInfo->isAdmin=='normal' && $users[0]->isAdmin==$loginInfo->isAdmin){
         if(empty($a)) session_start();
-        echo '{"users": "You are successfully loggedin!", "status":true}';
+        setcookie("role", $loginInfo->isAdmin, $timeout, "/", 'villbiz.com', false, false);
+        echo '{"users": "You are successfully loggedin!", "status":true, "profile":'.json_encode($users[0]).'}';
       }
       else
         echo '{"users": "You are not authorize to do this operation! please contact admin", "status":false}';
@@ -226,7 +225,7 @@ require 'routes.php';
      function sendSMS($mobile=null, $otp=null, $isReSent)
       {
         try {
-          if(isReSent){
+          if($isReSent){
              $sqlOtp="update mobileotp set otp='".$otp."' where mobile='".$mobile."'";
              $db = getConnection();
              $result = $db->query($sqlOtp);
@@ -306,7 +305,7 @@ require 'routes.php';
          }
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
-         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$sql.'"}}';
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
        }
      }
 
@@ -391,7 +390,7 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"User Created Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"News Created Successfully.","status":"success"}}';
             echo $success;
          }else{
            echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
@@ -402,7 +401,7 @@ require 'routes.php';
         }
      }
 
-     function updateProperties(){
+     function updateProperties($id){
        try {
          if($_POST['title'] && $_POST['location'] && $_POST['price'] && $_POST['desc']){
             $title=$_POST['title'];
@@ -425,7 +424,7 @@ require 'routes.php';
             $db = getConnection();
             $result = $db->query($sql);
             $db = null;
-            $success = '{"info":{"message":"Property Added Successfully.","status":true}}';
+            $success = '{"info":{"message":"Property Updated Successfully.","status":true}}';
             echo $success;
          }else{
            echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
@@ -436,9 +435,101 @@ require 'routes.php';
        }
      }
 
+     function updateCoffeePrice($id){
+       $coffeeInfo = json_decode(file_get_contents("php://input"));
+        try {
+          if($coffeeInfo && $coffeeInfo->trader && $coffeeInfo->city && $coffeeInfo->ap && $coffeeInfo->ac && $coffeeInfo->rp && $coffeeInfo->rc){
+           $trader=$coffeeInfo->trader;
+           $city=$coffeeInfo->city;
+           $ap=$coffeeInfo->ap;
+           $ac=$coffeeInfo->ac;
+           $rp=$coffeeInfo->rp;
+           $rc=$coffeeInfo->rc;
+            $sql="update coffee_price set trader='".$trader."',city='".$city."',ap='".$ap."',ac='".$ac."',rp='".$rp."',rc='".$rc."',modified_date='".date("Y-m-d h:i:s")."' where id='".$id."'";
+             $db = getConnection();
+             $result = $db->query($sql);
+             $db = null;
+            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            echo $success;
+         }else{
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+         }
+        } catch (Exception $e) {
+          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+        }
+     }
+
+     function updatePepperPrice($id){
+       $papperInfo = json_decode(file_get_contents("php://input"));
+        try {
+          if($papperInfo && $papperInfo->trader && $papperInfo->city && $papperInfo->quantity && $papperInfo->brand && $papperInfo->price){
+           $trader=$papperInfo->trader;
+           $city=$papperInfo->city;
+           $brand=$papperInfo->brand;
+           $quantity=$papperInfo->quantity;
+           $price=$papperInfo->price;
+            $sql="update pepper_price set trader='".$trader."',city='".$city."',brand='".$brand."',quantity='".$quantity."',price='".$price."',modified_date='".date("Y-m-d h:i:s")."' where id='".$id."'";
+             $db = getConnection();
+             $result = $db->query($sql);
+             $db = null;
+            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            echo $success;
+         }else{
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+         }
+        } catch (Exception $e) {
+          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+        }
+     }
+
+      function updateClosePrice($id){
+       $closeInfo = json_decode(file_get_contents("php://input"));
+        try {
+          if($closeInfo && $closeInfo->name && $closeInfo->price && $closeInfo->change && $closeInfo->changepercent){
+           $name=$closeInfo->name;
+           $price=$closeInfo->price;
+           $change=$closeInfo->change;
+           $changepercent=$closeInfo->changepercent;
+            $sql="update closing_price set name='".$name."',price='".$price."',clchange='".$change."',change_percent='".$changepercent."',modified_date='".date("Y-m-d h:i:s")."' where id='".$id."'";
+             $db = getConnection();
+             $result = $db->query($sql);
+             $db = null;
+            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            echo $success;
+         }else{
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+         }
+        } catch (Exception $e) {
+          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+        }
+     }
+
+     function updateNews($id){
+       $newsInfo = json_decode(file_get_contents("php://input"));
+        try {
+          if($newsInfo && $newsInfo->news){
+           $news=$newsInfo->news;
+            $sql="update news set news='".$news."',modified_date='".date("Y-m-d h:i:s")."' where id='".$id."'";
+             $db = getConnection();
+             $result = $db->query($sql);
+             $db = null;
+            $success = '{"info":{"message":"News Updated Successfully.","status":"success"}}';
+            echo $success;
+         }else{
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+         }
+        } catch (Exception $e) {
+          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+        }
+     }
+
      function deleteProperties($id){
        try {
-         $sql="update properties set status='inactive', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
          $db = getConnection();
          $result = $db->query($sql);
          $db = null;
@@ -450,6 +541,81 @@ require 'routes.php';
        }
 
      }
+
+     function deleteCoffeePrice($id){
+       try {
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $db = getConnection();
+         $result = $db->query($sql);
+         $db = null;
+         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         echo $success;
+       } catch (Exception $e) {
+         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+       }
+
+     }
+
+     function deletePepperPrice($id){
+       try {
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $db = getConnection();
+         $result = $db->query($sql);
+         $db = null;
+         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         echo $success;
+       } catch (Exception $e) {
+         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+       }
+
+     }
+
+     function deleteClosePrice($id){
+       try {
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $db = getConnection();
+         $result = $db->query($sql);
+         $db = null;
+         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         echo $success;
+       } catch (Exception $e) {
+         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+       }
+
+     }
+
+     function deleteNews($id){
+       try {
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $db = getConnection();
+         $result = $db->query($sql);
+         $db = null;
+         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         echo $success;
+       } catch (Exception $e) {
+         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+       }
+
+     }
+     function deleteImage($id){
+       try {
+         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $db = getConnection();
+         $result = $db->query($sql);
+         $db = null;
+         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         echo $success;
+       } catch (Exception $e) {
+         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+         echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+       }
+
+     }
+     
      function searchProperties($id){
        $searchInfo = json_decode(file_get_contents("php://input"));
        try {
