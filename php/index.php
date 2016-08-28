@@ -257,10 +257,13 @@ require 'routes.php';
                 $stmt = $db->query($sql);
                 $updateSql = "update user_signup set status='ACTIVE' where id='".$id."'";
                 $stmt = $db->query($updateSql);
+                $db = null;
+                $success = '{"info":{"message":"Your account has been created successfully.", "id":"'.$id.'", "status":"success"}}';
+                echo $success;
+              }else{
+                $success = '{"info":{"message":"Invalid otp provided.", "id":"'.$id.'", "status":"error"}}';
+                echo $success;
               }
-              $db = null;
-              $success = '{"info":{"message":"Your account has been created successfully.", "id":"'.$id.'", "status":"success"}}';
-              echo $success;
             } catch (Exception $e) {
               echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
             }
