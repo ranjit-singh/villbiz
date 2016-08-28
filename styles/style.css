@@ -153,6 +153,7 @@ hr {
 .margin-top-bottom-15 {
 	margin: 15px 0 !important;
 }
+
 .padding-right-20 {
 	padding-right: 20px !important;
 }
@@ -327,6 +328,9 @@ table.highlight>tbody>tr:hover {
 
 span.text-red {
 	margin-left: 5px;
+}
+.modal .modal-footer {
+	padding: 4px 24px !important;
 }
 
 
@@ -507,6 +511,12 @@ nav ul a:hover {
 }
 .main-header-social-media-link:hover .main-header-nav:before {
 	background-color: transparent !important;
+}
+.fb-btn {
+	padding-top: 24px;
+}
+.fb-btn iframe{
+	width: 78px;
 }
 
 
@@ -1154,6 +1164,12 @@ nav ul a:hover {
 .price-tab th, .price-tab td {
 	padding: 10px;
 	font-weight: 200;
+}
+.td-ell {
+	max-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .price-tab th {
 	background-color: #939393;
@@ -1964,7 +1980,7 @@ nav ul a:hover {
 	height: 40px;
 	line-height: 40px;
 }
-.admin-action i {
+.admin-action i, .admin-action a {
 	font-size: 22px;
 	cursor: pointer;
 	padding: 0 10px;
@@ -2132,4 +2148,42 @@ animation: spin 1.5s linear infinite;
 #loader:before {
     -webkit-animation: spin 3s linear infinite;
     animation: spin 3s linear infinite;
+}
+.propimgtd {
+	white-space: normal !important;
+}
+.propimg {
+	margin: 0;
+	overflow: hidden;
+}
+.propimg li {
+	list-style-type: none;
+	display: inline-block;
+	overflow: hidden;
+	margin-bottom: 5px;
+	margin-right: 2px;
+	position: relative;
+	border: 1px solid #ccc;
+}
+.propimg img{
+	width: 30px;
+	height: 30px;
+	float: left;
+}
+.propimg a {
+	float: right;
+	cursor: pointer;
+	font-size: 18px;
+	position: absolute;
+	top: -1px;
+	right: -1px;
+	display: none;
+	color: #595959;
+	background-color: #fff;
+}
+.propimg li:hover a {
+	display: block;
+}
+.social-media-prop-share {
+	
 }

@@ -1,7 +1,7 @@
 if(docCookies.getItem('PHPSESSID')){
-   window.location.href='admin.html';
+   //window.location.href='admin.html';
 }else{
-	//window.location.href='admin';
+	window.location.href='admin.html';
 }
 $(document).ready(function(){
         villbizApp.initialize();

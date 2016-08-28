@@ -1,3 +1,4 @@
+
 var file, flist;
 (function() {
 var input = document.getElementById('upload-icon');
@@ -38,7 +39,7 @@ function validate_filetype(fext, ftype) {
     $(document).ready(function(){
         villbizApp.initialize();
         if(!docCookies.getItem('PHPSESSID')){
-          location.replace('/villbiz/admin');
+          //location.replace('/villbiz/admin');
         }
         $('select').material_select();
         $('ul.tabs').tabs();
@@ -47,6 +48,7 @@ function validate_filetype(fext, ftype) {
           villbizApp.callGet('/php/properties/'+this.value, responsePropCallBack);
         });
         $(".button-collapse").sideNav();
+        $('.modal-trigger').leanModal();
     });
     function addProperties(){
       var formdata = new FormData();
@@ -64,17 +66,18 @@ function validate_filetype(fext, ftype) {
     }
     function propCallBack(response){
       response=JSON.parse(response);
-      if(response.info.status)villbizApp.callGet('/php/properties', responsePropCallBack);
+      if(response.info.status)villbizApp.callGet('/php/properties/'+$('#propType').val(), responsePropCallBack);
     }
     function responsePropCallBack(response){
       response=JSON.parse(response);
       var propList=response.prop, htmlList='';
       propList.forEach(function(value,index,arr){
         htmlList+='<tr><td>'+value.sno+'</td><td>'+value.type+'</td><td>'+value.title+'</td><td>'+value.cost+'</td><td>'+value.location+'</td>'
-                    +'<td>'+value.description+'</td><td>'+value.image+'</td><td class="text-center admin-action">'
-                    +'<i class="jif-pencil text-blue" title="Edit"></i><i class="jif-trash text-red" title="Delete"></i></td></tr>';
+                    +'<td class="td-ell">'+value.description+'</td><td class="propimgtd"><ul class="propimg"><li><img src="https://www.campaustralia.com.au/Assets/images/content/timeline/thumbnails/timeline-thumbnail-1.jpg"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li></ul></td><td class="text-center admin-action">'
+                    +'<i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#listProp').html(htmlList);
+      $('.modal-trigger').leanModal();
     };
 
     function getCoffeePrice(){
@@ -100,7 +103,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.ap+'</td><td>'+value.ac+'</td><td>'+value.rp+'</td><td>'+value.rc+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><i class="jif-trash text-red" title="Delete"></i></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#coffeePriceList').html(htmlList);
     }
@@ -126,7 +129,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.quantity+'</td><td>'+value.brand+'</td><td>'+value.price+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><i class="jif-trash text-red" title="Delete"></i></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#pepperPriceList').html(htmlList);
     }
@@ -151,7 +154,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.price+'</td><td>'+value.clchange+'</td><td>'+value.change_percent+'</td>'
-               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><i class="jif-trash text-red" title="Delete"></i></td></tr>';
+               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#closePriceList').html(htmlList);
     }
@@ -172,7 +175,7 @@ function validate_filetype(fext, ftype) {
       response=JSON.parse(response);
       var htmlList='';
       response.news.forEach(function(value,index,arr){
-      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><i class="jif-trash text-red" title="Delete"></i></td></tr>';
+      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#newsList').html(htmlList);
     }

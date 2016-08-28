@@ -90,14 +90,14 @@
 				<h4 class="text-center">Log In</h4>
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" id="loginusername" required minlength="10" maxlength="10">
-			          <label for="loginusername">Mobile Number<span class="text-red">*</span></label>
+			          <input type="number" class="validate no-margin" required>
+			          <label for="first_name">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
 		      	<div class="row">
 			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" id="loginpassword" required>
-			          <label for="loginpassword">Password<span class="text-red">*</span></label>
+			          <input type="password" class="validate no-margin" required>
+			          <label for="email">Password<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
 		      	<div class="row margin-bottom-10">
@@ -211,7 +211,7 @@
 			    </div>
 		      	<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" name="mobilenumber" required id="mobilenumber" minlength="10" maxlength="10">
+			          <input type="number" class="validate no-margin" name="mobilenumber" required id="mobilenumber">
 			          <label for="mobilenumber">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
@@ -262,7 +262,7 @@
 			    </div>
 			    <div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
 			      	</div>
 				</div>
 			</div>
@@ -289,16 +289,16 @@
 			    </div>
 			    <div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
 			      	</div>
 				</div>
 			</div>
 			</form>
-			<div class="col s12 no-padding signup-otp-box hide" id="signupsucess">
+			<div class="col s12 no-padding signup-otp-box hide">
 				<h5 class="text-center">Congratulations!</h5>
 				<h6 class="text-center">Your Account has been created.</h6>
 				<h6 class="text-center forgor-pwd-success">
-					<a class="text-green" href="javascript:showLoginForm();">Login</a>
+					<a class="text-green" href="#">Login</a>
 				</h6>
 			</div>
 	</div>
@@ -355,7 +355,7 @@
 			</div>
 			<div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
+			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
 			      	</div>
 				</div>
 		</form>

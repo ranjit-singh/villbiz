@@ -14,4 +14,12 @@ $(document).ready(function(){
           $('select').material_select();
       });
     });
+    $(".prop-checkbox").change(function(){
+      if(this.checked){
+        $(".tile-list-box").addClass('property-list-view');
+      } else {
+        $(".tile-list-box").removeClass('property-list-view');
+      }
+    });
 });
+

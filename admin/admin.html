@@ -31,6 +31,7 @@
 					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
 					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
 					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+					<li class="tab col s3"><a href="#tab6">Contact Us</a></li>
 				</ul>
 				<ul class="tabs admin-tabs side-nav mob-side-menu-slider admin-mob-menu" id="mobile-demo">
 				 	<li class="tab col s3"><a class="active" href="#tab1">Properties</a></li>
@@ -38,6 +39,7 @@
 					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
 					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
 					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+					<li class="tab col s3"><a href="#tab6">Contact Us</a></li>
 				</ul>
 			</div>
 		</nav>
@@ -97,6 +99,22 @@
 										<input class="file-path validate" type="text" placeholder="Upload one or more files">
 									</div>
 								</div>
+							</div>
+							<div class="row no-margin">
+								<ul class="col s12 propimg">
+									<li>
+										<img src="https://www.campaustralia.com.au/Assets/images/content/timeline/thumbnails/timeline-thumbnail-1.jpg">
+										<a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a>
+									</li>
+									<li>
+										<img src="https://www.campaustralia.com.au/Assets/images/content/timeline/thumbnails/timeline-thumbnail-1.jpg">
+										<a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a>
+									</li>
+									<li>
+										<img src="https://www.campaustralia.com.au/Assets/images/content/timeline/thumbnails/timeline-thumbnail-1.jpg">
+										<a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a>
+									</li>
+								</ul>
 							</div>
 							<div class="row no-margin">
 								<div class="input-field col s12 admin-add-btn">
@@ -397,6 +415,57 @@
 					</table>
 				</div>
 			</div>
+		</div>
+	</div>
+	<div class="section" id="tab6">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th width="5%">SNo</th>
+								<th width="15%">Name</th>
+								<th width="25%">Email</th>
+								<th width="15%">Mobile Number</th>
+								<th width="35%">Message</th>
+							</tr>
+						</thead>
+						<tbody id="contactus">
+							<td>1</td>
+							<td>Anusha</td>
+							<td>anushashamili@gmail.com</td>
+							<td>8867571297</td>
+							<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+							tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+							quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+							consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+							cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+							proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="delete-image-popup" class="modal sign-sm-modal">
+		<div class="modal-content">
+			<h4 class="text-green">Delete?</h4>
+			<p>Are you sure you want to delete this file?</p>
+		</div>
+		<div class="modal-footer">
+			<button class="waves-effect waves-light btn bg-green col s6 l3">Yes</button>
+			<button class="waves-effect waves-light btn bg-green col s6 l3 margin-right-10 modal-close">Cancel</button>
+		</div>
+	</div>
+	<div id="delete-property-popup" class="modal sign-sm-modal">
+		<div class="modal-content">
+			<h4 class="text-green">Delete?</h4>
+			<p>Are you sure you want to delete this file?</p>
+		</div>
+		<div class="modal-footer">
+			<button class="waves-effect waves-light btn bg-green col s6 l3">Yes</button>
+			<button class="waves-effect waves-light btn bg-green col s6 l3 margin-right-10 modal-close">Cancel</button>
 		</div>
 	</div>
 </div>
