@@ -52,11 +52,10 @@ var villbizApp = (function () {
                         }
                   });
         };
-        apiService.callDelete=function(serviceName, dataObj, callback){
+        apiService.callDelete=function(serviceName, callback){
             $.ajax({
                         url:window.location.origin+'/villbiz'+serviceName,
                         type:'DELETE',
-                        data:dataObj,
                         beforeSend:function(xhr){
                            $('#loader-wrapper').fadeIn('500');
                         },

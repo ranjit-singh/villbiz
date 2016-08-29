@@ -2161,12 +2161,13 @@ animation: spin 1.5s linear infinite;
 	display: inline-block;
 	overflow: hidden;
 	margin-bottom: 5px;
-	margin-right: 2px;
+	margin-right: 1px;
+	margin-left: 1px;
 	position: relative;
 	border: 1px solid #ccc;
 }
 .propimg img{
-	width: 30px;
+	width: 29px;
 	height: 30px;
 	float: left;
 }

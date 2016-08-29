@@ -55,7 +55,6 @@ function validate_filetype(fext, ftype) {
           for(var i in flist){
             formdata.append('uploadimage[]', flist[i]);
           }
-          
           formdata.append('title', $('#title').val());
           formdata.append('type', $('#propType').val());
           formdata.append('location', $('#location').val());
@@ -72,12 +71,16 @@ function validate_filetype(fext, ftype) {
       response=JSON.parse(response);
       var propList=response.prop, htmlList='';
       propList.forEach(function(value,index,arr){
+        var imgArray=(value.image).split(','), img_thumb='';
+        for(var i in imgArray){
+          img_thumb+='<li><img src="../php/upload/'+imgArray[i]+'"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li>';
+        }
         htmlList+='<tr><td>'+value.sno+'</td><td>'+value.type+'</td><td>'+value.title+'</td><td>'+value.cost+'</td><td>'+value.location+'</td>'
-                    +'<td class="td-ell">'+value.description+'</td><td class="propimgtd"><ul class="propimg"><li><img src="https://www.campaustralia.com.au/Assets/images/content/timeline/thumbnails/timeline-thumbnail-1.jpg"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li></ul></td><td class="text-center admin-action">'
-                    +'<i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+                    +'<td class="td-ell">'+value.description+'</td><td class="propimgtd"><ul class="propimg">'+img_thumb+'</ul></td><td class="text-center admin-action">'
+                    +'<i class="jif-pencil text-blue" onclick="editProperties(\''+value.id+'\', \''+value.title+'\', \''+value.location+'\', \''+value.description+'\', \''+value.cost+'\', \''+value.image+'\')" title="Edit"></i><a href="javascript:deleteProperties(\''+value.id+'\',\''+value.type+'\');" title="Delete" class="jif-trash text-red modal-trigger" id='+value.id+'></a></td></tr>';
       });
       $('#listProp').html(htmlList);
-      $('.modal-trigger').leanModal();
+      document.getElementById('create-properties-form').reset();
     };
 
     function getCoffeePrice(){
@@ -190,3 +193,37 @@ function validate_filetype(fext, ftype) {
         location.replace('/villbiz/admin');
       });
     }
+
+    function editProperties(id, title, location, desc, price, img){
+        var formdata = new FormData();
+            for(var i in flist){
+              formdata.append('uploadimage[]', flist[i]);
+            }
+            
+        var prop_title=$('#title'),
+            prop_location=$('#location'),
+            prop_price=$('#price'),
+            prop_desc=$('#description'),
+            img=img.split(',');
+            prop_title.val(title);
+            prop_location.val(location);
+            prop_price.val(price);
+            prop_desc.val(desc);
+        var imgList='';
+            for(var i in img){
+              imgList+='<li><img src="../php/upload/'+img[i]+'"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li>';
+            }
+            $('#prop-img-list').removeClass('hide').html(imgList);
+            //villbizApp.callPost('/php/updateproperties/'+id, formdata, propCallBack);
+            return false;
+    }
+   function deleteProperties(id, type){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/properties/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/properties/'+type, responsePropCallBack);
+      });
+     });
+   }

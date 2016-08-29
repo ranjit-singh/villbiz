@@ -532,8 +532,17 @@ require 'routes.php';
 
      function deleteProperties($id){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
-         $db = getConnection();
+         //$sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".$id."'";
+          $selectSql = "select image from properties where id='".$id."'";
+          $db = getConnection();
+          $stmt = $db->query($selectSql);
+          $properties = $stmt->fetchAll(PDO::FETCH_OBJ);
+          $imgList=explode(",",$properties[0]->image);
+          for($i=0; $i < count($imgList); $i++){
+               $deleteFileName = dirname(__FILE__).'/upload/'.$imgList[$i];
+               unlink($deleteFileName);
+          }
+         $sql="delete from properties where id='".$id."'";
          $result = $db->query($sql);
          $db = null;
          $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
