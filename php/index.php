@@ -536,17 +536,24 @@ require 'routes.php';
           $selectSql = "select image from properties where id='".$id."'";
           $db = getConnection();
           $stmt = $db->query($selectSql);
-          $properties = $stmt->fetchAll(PDO::FETCH_OBJ);
-          $imgList=explode(",",$properties[0]->image);
-          for($i=0; $i < count($imgList); $i++){
+          $propImage = $stmt->fetchAll(PDO::FETCH_OBJ);
+          if($propImage[0]->image!=="")
+          if(strpos($propImage[0]->image, ",")){
+            $imgList=explode(",", $propImage[0]->image);
+            for($i=0; $i < count($imgList); $i++){
                $deleteFileName = dirname(__FILE__).'/upload/'.$imgList[$i];
                unlink($deleteFileName);
+            }
+          }else{
+               $deleteFileName = dirname(__FILE__).'/upload/'.$propImage[0]->image;
+               unlink($deleteFileName);
           }
-         $sql="delete from properties where id='".$id."'";
-         $result = $db->query($sql);
-         $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
-         echo $success;
+          
+          $sql="delete from properties where id='".$id."'";
+          $result = $db->query($sql);
+          $db = null;
+          $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
          echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
@@ -556,11 +563,11 @@ require 'routes.php';
 
      function deleteCoffeePrice($id){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="delete from coffee_price where id='".$id."'";
          $db = getConnection();
          $result = $db->query($sql);
          $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         $success = '{"info":{"message":"Coffee Price Deleted Successfully.","status":true}}';
          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -571,11 +578,11 @@ require 'routes.php';
 
      function deletePepperPrice($id){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="delete from pepper_price where id='".$id."'";
          $db = getConnection();
          $result = $db->query($sql);
          $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         $success = '{"info":{"message":"Pepper Price Deleted Successfully.","status":true}}';
          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -586,11 +593,11 @@ require 'routes.php';
 
      function deleteClosePrice($id){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="delete from closing_price where id='".$id."'";
          $db = getConnection();
          $result = $db->query($sql);
          $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         $success = '{"info":{"message":"Close Price Deleted Successfully.","status":true}}';
          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -601,11 +608,11 @@ require 'routes.php';
 
      function deleteNews($id){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="delete from news where id='".$id."'";
          $db = getConnection();
          $result = $db->query($sql);
          $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+         $success = '{"info":{"message":"News Deleted Successfully.","status":true}}';
          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -613,13 +620,25 @@ require 'routes.php';
        }
 
      }
-     function deleteImage($id){
+     function deleteImage($id, $imagename){
        try {
-         $sql="update properties set status='INACTIVE', modified_date='".date("Y-m-d h:i:s")."' where id='".id."'";
+         $sql="select image from properties where id='".$id."'";
          $db = getConnection();
-         $result = $db->query($sql);
+         $stmt = $db->query($sql);
+         $result = $stmt->fetchAll(PDO::FETCH_OBJ);
+         
+         $imgList=explode(",",$result[0]->image);
+         $position=array_search($imagename, $imgList);
+         unset($imgList[$position]);
+
+         $updateSql="update properties set image='".implode(",",$imgList)."' where id='".$id."'";
+         $stmt = $db->query($updateSql);
          $db = null;
-         $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
+
+         $deleteFileName = dirname(__FILE__).'/upload/'.$imagename;
+         unlink($deleteFileName);
+
+         $success = '{"info":{"message":"Image Deleted Successfully.","status":true}}';
          echo $success;
        } catch (Exception $e) {
          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log

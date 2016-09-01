@@ -66,6 +66,7 @@ function validate_filetype(fext, ftype) {
     function propCallBack(response){
       response=JSON.parse(response);
       if(response.info.status)villbizApp.callGet('/php/properties/'+$('#propType').val(), responsePropCallBack);
+      document.getElementById('create-properties-form').reset();
     }
     function responsePropCallBack(response){
       response=JSON.parse(response);
@@ -73,14 +74,13 @@ function validate_filetype(fext, ftype) {
       propList.forEach(function(value,index,arr){
         var imgArray=(value.image).split(','), img_thumb='';
         for(var i in imgArray){
-          img_thumb+='<li><img src="../php/upload/'+imgArray[i]+'"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li>';
+          img_thumb+='<li><img src="../php/upload/'+imgArray[i]+'"><a href="javascript:deleteImage(\''+value.id+'\', \''+value.type+'\', \''+imgArray[i]+'\');" class="jif-cancel-1 modal-trigger"></a></li>';
         }
         htmlList+='<tr><td>'+value.sno+'</td><td>'+value.type+'</td><td>'+value.title+'</td><td>'+value.cost+'</td><td>'+value.location+'</td>'
                     +'<td class="td-ell">'+value.description+'</td><td class="propimgtd"><ul class="propimg">'+img_thumb+'</ul></td><td class="text-center admin-action">'
                     +'<i class="jif-pencil text-blue" onclick="editProperties(\''+value.id+'\', \''+value.title+'\', \''+value.location+'\', \''+value.description+'\', \''+value.cost+'\', \''+value.image+'\')" title="Edit"></i><a href="javascript:deleteProperties(\''+value.id+'\',\''+value.type+'\');" title="Delete" class="jif-trash text-red modal-trigger" id='+value.id+'></a></td></tr>';
       });
       $('#listProp').html(htmlList);
-      document.getElementById('create-properties-form').reset();
     };
 
     function getCoffeePrice(){
@@ -106,7 +106,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.ap+'</td><td>'+value.ac+'</td><td>'+value.rp+'</td><td>'+value.rc+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteCoffeePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#coffeePriceList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -133,7 +133,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.quantity+'</td><td>'+value.brand+'</td><td>'+value.price+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deletePepperPrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#pepperPriceList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -159,7 +159,7 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.price+'</td><td>'+value.clchange+'</td><td>'+value.change_percent+'</td>'
-               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteClosePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#closePriceList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -181,7 +181,7 @@ function validate_filetype(fext, ftype) {
       response=JSON.parse(response);
       var htmlList='';
       response.news.forEach(function(value,index,arr){
-      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="#delete-property-popup" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteNews(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#newsList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -221,6 +221,56 @@ function validate_filetype(fext, ftype) {
      $('#delete-property-popup').openModal();
      $('#confirm-delete-prop').unbind('click').click(function(evt){
       villbizApp.callDelete('/php/properties/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/properties/'+type, responsePropCallBack);
+      });
+     });
+   }
+   function deleteCoffeePrice(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/coffee/price/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/coffee/price', coffeeCallBack);
+      });
+     });
+   }
+   function deletePepperPrice(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/pepper/price/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/pepper/price', pepperCallBack);
+      });
+     });
+   }
+   function deleteClosePrice(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/close/price/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/close/price', closeCallBack);
+      });
+     });
+   }
+   function deleteNews(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/news/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/news', newsCallBack);
+      });
+     });
+   }
+   function deleteImage(id, type, imageName){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/properties/image/'+id+'/'+imageName, function(resp){
         resp=JSON.parse(resp);
         $('#delete-property-popup').closeModal();
         if(resp.info.status)villbizApp.callGet('/php/properties/'+type, responsePropCallBack);

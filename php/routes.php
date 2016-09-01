@@ -37,7 +37,7 @@ $app->delete('/coffee/price/:id','deleteCoffeePrice');
 $app->delete('/pepper/price/:id','deletePepperPrice');
 $app->delete('/close/price/:id','deleteClosePrice');
 $app->delete('/news/:id','deleteNews');
-$app->delete('/properties/image/:id','deleteImage');
+$app->delete('/properties/image/:id/:imagename','deleteImage');
 
 
 $app->run();
