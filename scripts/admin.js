@@ -1,5 +1,7 @@
 
 var file, flist;
+window.imageAvailable=[];
+window.deletedImage=[];
 (function() {
 var input = document.getElementById('upload-icon');
 $(input).bind("change",function(evt) {
@@ -24,6 +26,7 @@ $(input).bind("change",function(evt) {
       // }
     }
     else {
+      this.value='';
       alert("Invalid image format.\n Try with png, jpg, bmp, gif formats.");
     }
   }
@@ -49,8 +52,45 @@ function validate_filetype(fext, ftype) {
         });
         $(".button-collapse").sideNav();
         $('.modal-trigger').leanModal();
+        init();
     });
-    function addProperties(){
+    function init(){
+      $('#btn-prop').val('ADD PROPERTY');
+      $('#create-properties-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addProperties(true, $('#propType').val());
+          return false;
+      });
+      $('#btn-coffee-price').val('Add Coffee Price');
+      document.getElementById('coffee-price-form').reset();
+      $('#coffee-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addCoffeePrice(true);
+          return false;
+      });
+      $('#btn-pepper-price').val('Add Pepper Price');
+      document.getElementById('pepper-price-form').reset();
+      $('#pepper-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addPepperPrice(true);
+          return false;
+      });
+      $('#btn-close-price').val('Add Close Price');
+      document.getElementById('close-price-form').reset();
+      $('#close-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addClosingPrice(true);
+          return false;
+      });
+      $('#btn-news').val('Add News');
+      document.getElementById('news-form').reset();
+      $('#news-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addNews(true);
+          return false;
+      });
+    }
+    function addProperties(isNew, type, id){
       var formdata = new FormData();
           for(var i in flist){
             formdata.append('uploadimage[]', flist[i]);
@@ -60,25 +100,43 @@ function validate_filetype(fext, ftype) {
           formdata.append('location', $('#location').val());
           formdata.append('price', $('#price').val());
           formdata.append('desc', $('#description').val());
-          villbizApp.callPost('/php/createproperties', formdata, propCallBack);
-          return false;
+          if(isNew){
+            villbizApp.callPost('/php/createproperties', formdata, function(response){
+              response=JSON.parse(response);
+              if(response.info.status){
+                init();
+                villbizApp.callGet('/php/properties/'+type, responsePropCallBack);
+                document.getElementById('create-properties-form').reset();
+            }
+            });
+          }else{
+            formdata.append('imagelist', imageAvailable);
+            formdata.append('deletedImage', deletedImage);
+            villbizApp.callPost('/php/properties/'+id, formdata, function(response){
+              response=JSON.parse(response);
+              if(response.info.status){
+                init();
+                villbizApp.callGet('/php/properties/'+type, responsePropCallBack);
+                document.getElementById('create-properties-form').reset();
+            }
+            });
+          }
+          
+          
     }
-    function propCallBack(response){
-      response=JSON.parse(response);
-      if(response.info.status)villbizApp.callGet('/php/properties/'+$('#propType').val(), responsePropCallBack);
-      document.getElementById('create-properties-form').reset();
-    }
+
     function responsePropCallBack(response){
       response=JSON.parse(response);
       var propList=response.prop, htmlList='';
       propList.forEach(function(value,index,arr){
         var imgArray=(value.image).split(','), img_thumb='';
         for(var i in imgArray){
-          img_thumb+='<li><img src="../php/upload/'+imgArray[i]+'"><a href="javascript:deleteImage(\''+value.id+'\', \''+value.type+'\', \''+imgArray[i]+'\');" class="jif-cancel-1 modal-trigger"></a></li>';
+          if(imgArray[i]!=="")img_thumb+='<li><img src="../php/upload/'+imgArray[i]+'"><a href="javascript:deleteImage(\''+value.id+'\', \''+value.type+'\', \''+imgArray[i]+'\');" class="jif-cancel-1 modal-trigger"></a></li>';
         }
+        villbizApp.setData(value.id, value.description);
         htmlList+='<tr><td>'+value.sno+'</td><td>'+value.type+'</td><td>'+value.title+'</td><td>'+value.cost+'</td><td>'+value.location+'</td>'
                     +'<td class="td-ell">'+value.description+'</td><td class="propimgtd"><ul class="propimg">'+img_thumb+'</ul></td><td class="text-center admin-action">'
-                    +'<i class="jif-pencil text-blue" onclick="editProperties(\''+value.id+'\', \''+value.title+'\', \''+value.location+'\', \''+value.description+'\', \''+value.cost+'\', \''+value.image+'\')" title="Edit"></i><a href="javascript:deleteProperties(\''+value.id+'\',\''+value.type+'\');" title="Delete" class="jif-trash text-red modal-trigger" id='+value.id+'></a></td></tr>';
+                    +'<i class="jif-pencil text-blue" onclick="editProperties(\''+value.id+'\', \''+value.title+'\', \''+value.location+'\', \''+value.cost+'\', \''+value.image+'\', \''+value.type+'\')" title="Edit"></i><a href="javascript:deleteProperties(\''+value.id+'\',\''+value.type+'\');" title="Delete" class="jif-trash text-red modal-trigger" id='+value.id+'></a></td></tr>';
       });
       $('#listProp').html(htmlList);
     };
@@ -86,7 +144,7 @@ function validate_filetype(fext, ftype) {
     function getCoffeePrice(){
       villbizApp.callGet('/php/coffee/price', coffeeCallBack);
     }
-    function addCoffeePrice(){
+    function addCoffeePrice(isNew, id){
       var coffeeObj={};
       coffeeObj.trader=$('#trader').val();
       coffeeObj.city=$('#city').val();
@@ -94,11 +152,23 @@ function validate_filetype(fext, ftype) {
       coffeeObj.ac=$('#ac').val();
       coffeeObj.rp=$('#rp').val();
       coffeeObj.rc=$('#rc').val();
-      villbizApp.callPost('/php/coffeeprice', JSON.stringify(coffeeObj), function(response){
+      if(isNew){
+        villbizApp.callPost('/php/coffeeprice', JSON.stringify(coffeeObj), function(response){
         response=JSON.parse(response);
-        if(response.info.status)villbizApp.callGet('/php/coffee/price', coffeeCallBack);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/coffee/price', coffeeCallBack);
+        }
       });
-      return false;
+      }else{
+        villbizApp.callPost('/php/coffeeprice/'+id, JSON.stringify(coffeeObj), function(response){
+        response=JSON.parse(response);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/coffee/price', coffeeCallBack);
+        }
+      });
+      }
     }
 
     function coffeeCallBack(response){
@@ -106,7 +176,8 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.ap+'</td><td>'+value.ac+'</td><td>'+value.rp+'</td><td>'+value.rc+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteCoffeePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit" onclick="editCoffeePrice(\''+value.id+'\', \''+value.trader+'\', \''+value.city+'\', \''+value.ap+'\', \''+value.ac+'\', \''+value.rp+'\', \''+value.rc+'\')"></i>'
+              +'<a href="javascript:deleteCoffeePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#coffeePriceList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -114,18 +185,30 @@ function validate_filetype(fext, ftype) {
     function getPepperPrice(){
       villbizApp.callGet('/php/pepper/price', pepperCallBack);
     }
-    function addPepperPrice(){
+    function addPepperPrice(isNew, id){
       var pepperObj={};
       pepperObj.trader=$('#ptrader').val();
       pepperObj.city=$('#pcity').val();
       pepperObj.quantity=$('#quantity').val();
       pepperObj.brand=$('#brand').val();
       pepperObj.price=$('#pprice').val();
-      villbizApp.callPost('/php/pepperprice', JSON.stringify(pepperObj), function(response){
+      if(isNew){
+        villbizApp.callPost('/php/pepperprice', JSON.stringify(pepperObj), function(response){
         response=JSON.parse(response);
-        if(response.info.status)villbizApp.callGet('/php/pepper/price', pepperCallBack);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/pepper/price', pepperCallBack);
+        }
       });
-      return false;
+      }else{
+        villbizApp.callPost('/php/pepperprice/'+id, JSON.stringify(pepperObj), function(response){
+        response=JSON.parse(response);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/pepper/price', pepperCallBack);
+        }
+      });
+      }
     }
 
     function pepperCallBack(response){
@@ -133,23 +216,37 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.trader+'</td><td>'+value.city+'</td><td>'+value.quantity+'</td><td>'+value.brand+'</td><td>'+value.price+'</td>'
-              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deletePepperPrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+              +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit" onclick="editPepperPrice(\''+value.id+'\', \''+value.trader+'\', \''+value.city+'\', \''+value.quantity+'\', \''+value.brand+'\', \''+value.price+'\')"></i>'
+              +'<a href="javascript:deletePepperPrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#pepperPriceList').html(htmlList);
        $('.modal-trigger').leanModal();
     }
 
-    function addCloseingPrice(){
+    function addClosingPrice(isNew, id){
       var changeObj={};
       changeObj.name=$('#chname').val();
       changeObj.price=$('#chprice').val();
       changeObj.change=$('#clchange').val();
       changeObj.changepercent=$('#changepercent').val();
-      villbizApp.callPost('/php/closeprice', JSON.stringify(changeObj), function(response){
+      if(isNew){
+        villbizApp.callPost('/php/closeprice', JSON.stringify(changeObj), function(response){
         response=JSON.parse(response);
-        if(response.info.status)villbizApp.callGet('/php/close/price', closeCallBack);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/close/price', closeCallBack);
+        }
+        });
+      }else{
+        villbizApp.callPost('/php/closeprice/'+id, JSON.stringify(changeObj), function(response){
+        response=JSON.parse(response);
+         if(response.info.status){
+          init();
+          villbizApp.callGet('/php/close/price', closeCallBack);
+        }
       });
-      return false;
+      }
+      
     }
     function getClosePrice(){
       villbizApp.callGet('/php/close/price', closeCallBack);
@@ -159,20 +256,34 @@ function validate_filetype(fext, ftype) {
       var htmlList='';
       response.price.forEach(function(value,index,arr){
       htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.price+'</td><td>'+value.clchange+'</td><td>'+value.change_percent+'</td>'
-               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteClosePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+               +'<td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit" onclick="editClosePrice(\''+value.id+'\', \''+value.name+'\', \''+value.price+'\', \''+value.clchange+'\', \''+value.change_percent+'\')"></i>'
+               +'<a href="javascript:deleteClosePrice(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#closePriceList').html(htmlList);
        $('.modal-trigger').leanModal();
     }
 
-    function addNews(){
+    function addNews(isNew, id){
       var newsObj={};
       newsObj.news=$('#newsdescription').val();
-      villbizApp.callPost('/php/news', JSON.stringify(newsObj), function(response){
+      if(isNew){
+        villbizApp.callPost('/php/news', JSON.stringify(newsObj), function(response){
         response=JSON.parse(response);
-        if(response.info.status)villbizApp.callGet('/php/news', newsCallBack);
+         if(response.info.status){
+          init();
+          villbizApp.callGet('/php/news', newsCallBack);
+        }
       });
-      return false;
+      }else{
+        villbizApp.callPost('/php/news/'+id, JSON.stringify(newsObj), function(response){
+        response=JSON.parse(response);
+        if(response.info.status){
+          init();
+          villbizApp.callGet('/php/news', newsCallBack);
+        }
+      });
+      }
+      
     }
     function getNews(){
       villbizApp.callGet('/php/news', newsCallBack);
@@ -181,7 +292,9 @@ function validate_filetype(fext, ftype) {
       response=JSON.parse(response);
       var htmlList='';
       response.news.forEach(function(value,index,arr){
-      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action"><i class="jif-pencil text-blue" title="Edit"></i><a href="javascript:deleteNews(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+      htmlList+='<tr><td>'+index+'</td><td>'+value.news+'</td><td class="text-center admin-action">'
+      +'<i class="jif-pencil text-blue" title="Edit" onclick="editNews(\''+value.id+'\', \''+value.news+'\')"></i>'
+      +'<a href="javascript:deleteNews(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#newsList').html(htmlList);
        $('.modal-trigger').leanModal();
@@ -193,29 +306,97 @@ function validate_filetype(fext, ftype) {
         location.replace('/villbiz/admin');
       });
     }
-
-    function editProperties(id, title, location, desc, price, img){
+    
+    function editProperties(id, title, location, price, img, type){
         var formdata = new FormData();
+            deletedImage=[];
+            $('#propType').val(type);
+            $('#btn-prop').val('UPDATE PROPERTY');
             for(var i in flist){
               formdata.append('uploadimage[]', flist[i]);
             }
             
-        var prop_title=$('#title'),
-            prop_location=$('#location'),
-            prop_price=$('#price'),
-            prop_desc=$('#description'),
-            img=img.split(',');
-            prop_title.val(title);
-            prop_location.val(location);
-            prop_price.val(price);
-            prop_desc.val(desc);
+        var img=img.split(','), desc=villbizApp.getData(id);
+            imageAvailable=img.slice();
+            $('#title').val(title);
+            $('#location').val(location);
+            $('#price').val(price);
+            $('#description').val(desc);
+            if(imageAvailable.indexOf("")!=-1)imageAvailable.splice(imageAvailable.indexOf(""), 1);
         var imgList='';
-            for(var i in img){
-              imgList+='<li><img src="../php/upload/'+img[i]+'"><a href="#delete-image-popup" class="jif-cancel-1 modal-trigger"></a></li>';
+            for(var i in imageAvailable){
+              if(imageAvailable!=="")imgList+='<li><img src="../php/upload/'+imageAvailable[i]+'"><a href="javascript:removeImage(\''+imageAvailable[i]+'\');" class="jif-cancel-1 modal-trigger"></a></li>';
             }
             $('#prop-img-list').removeClass('hide').html(imgList);
-            //villbizApp.callPost('/php/updateproperties/'+id, formdata, propCallBack);
-            return false;
+            $('#create-properties-form').unbind('submit').submit(function(evt){
+                  evt.stopPropagation();
+                  var formdata = new FormData();
+                  for(var i in flist){
+                    formdata.append('uploadimage[]', flist[i]);
+                  }
+                  addProperties(false, type, id);
+                  return false;
+              });
+    }
+
+    function editCoffeePrice(id,trader,city,ap,ac,rp,rc){
+      $('#btn-coffee-price').val('Update Coffee Price');
+       $('#coffee-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addCoffeePrice(false, id);
+          return false;
+      });
+      $('#trader').val(trader);
+      $('#city').val(city);
+      $('#ap').val(ap);
+      $('#ac').val(ac);
+      $('#rp').val(rp);
+      $('#rc').val(rc);
+    }
+
+    function editPepperPrice(id,trader,city,quantity,brand,price){
+      $('#btn-pepper-price').val('Update Pepper Price');
+      $('#pepper-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addPepperPrice(false, id);
+          return false;
+      });
+      $('#ptrader').val(trader);
+      $('#pcity').val(city);
+      $('#quantity').val(quantity);
+      $('#brand').val(brand);
+      $('#pprice').val(price);
+    }
+
+    function editClosePrice(id,name,price,changepercent,change_percent){
+      $('#btn-close-price').val('Update Close Price');
+      $('#close-price-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addClosingPrice(false, id);
+          return false;
+      });
+      $('#chname').val(name);
+      $('#chprice').val(price);
+      $('#clchange').val(changepercent);
+      $('#changepercent').val(change_percent);
+    }
+    function editNews(id, news){
+      $('#btn-news').val('Update News');
+      $('#news-form').unbind('submit').submit(function(evt){
+          evt.stopPropagation();
+          addNews(false, id);
+          return false;
+      });
+      $('#newsdescription').val(news);
+    }
+    function removeImage(imageName){
+      var imgList='';
+      deletedImage.push(imageAvailable.slice(imageAvailable.indexOf(imageName), 1));
+      imageAvailable.splice(imageAvailable.indexOf(imageName), 1);
+      for(var i in imageAvailable){
+              imgList+='<li><img src="../php/upload/'+imageAvailable[i]+'"><a href="javascript:removeImage(\''+imageAvailable[i]+'\');" class="jif-cancel-1 modal-trigger"></a></li>';
+      }
+      $('#prop-img-list').removeClass('hide').html(imgList);
     }
    function deleteProperties(id, type){
      $('#delete-property-popup').openModal();

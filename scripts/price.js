@@ -77,10 +77,14 @@ function loadPrice(evt){
         usrInfo.isAdmin="normal";
         villbizApp.callPost('/php/createuser', JSON.stringify(usrInfo), function(resp){
           resp=JSON.parse(resp);
-          villbizApp.setData('uid', resp.info.id);
-          villbizApp.setData('mobile', usrInfo.mobile);alert(villbizApp.getData('uid'));
-          $('#signupForm').fadeOut('500');
-          $('#userOtpApproval').fadeIn('500');
+          if(resp.info.status){
+            villbizApp.setData('uid', resp.info.id);
+            villbizApp.setData('mobile', usrInfo.mobile);
+            $('#signupForm').fadeOut('500');
+            $('#userOtpApproval').fadeIn('500');
+          }else{
+            alert(resp.info.message);
+          }
         });
       return false;
   }
@@ -88,8 +92,13 @@ function loadPrice(evt){
   function userOtpApproval(){
     var otp=$('#mobOtp').val();
     villbizApp.callGet('/php/verifyotp/'+villbizApp.getData('uid')+'/'+otp, function(response){
-          $('#userOtpApproval').addClass('hide');
-          $('#signupsucess').removeClass('hide');
+          response=JSON.parse(response);
+          if(response.info.status){
+            $('#userOtpApproval').addClass('hide');
+            $('#signupsucess').removeClass('hide');
+          }else{
+            alert(response.info.message);
+          }
         });
       return false;
   }
@@ -114,3 +123,9 @@ function loadPrice(evt){
           });
       return false;
   }
+  function logOut(){
+      villbizApp.callGet('/php/logout', function(resp){
+        docCookies.removeItem('PHPSESSID');
+        location.replace('/villbiz');
+      });
+    }

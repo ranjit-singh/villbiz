@@ -7,7 +7,7 @@
 				<ul id='logedinuser' class='dropdown-content logedinuser-dropdown'>
 					<li><a href="#change-password-modal" class="modal-trigger"><i class="jif-cog"></i>Settings</a></li>
 				    <li class="divider"></li>
-				    <li><a href="javascript:void(0)"><i class="jif-off"></i>Logout</a></li>
+				    <li><a href="javascript:logOut();"><i class="jif-off"></i>Logout</a></li>
 				</ul>
 			</div>
 			<div class="row">
@@ -90,14 +90,14 @@
 				<h4 class="text-center">Log In</h4>
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" required>
-			          <label for="first_name">Mobile Number<span class="text-red">*</span></label>
+			          <input type="number" class="validate no-margin" id="loginusername" required>
+			          <label for="loginusername">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
 		      	<div class="row">
 			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" required>
-			          <label for="email">Password<span class="text-red">*</span></label>
+			          <input type="password" class="validate no-margin" id="loginpassword" required>
+			          <label for="loginpassword">Password<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
 		      	<div class="row margin-bottom-10">

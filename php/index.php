@@ -36,7 +36,7 @@ require 'routes.php';
   }
   function getProperties($type){
         try {
-          $sql = "select sno,id,title,type,cost,location,description,image from properties where type='".$type."' && status='ACTIVE' order by created_date desc";
+          $sql = "select sno,id,title,type,cost,location,description,image from properties where type='".$type."' && status='ACTIVE' order by sno asc";
           $db = getConnection();
           $stmt = $db->query($sql);
           $properties = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -181,7 +181,7 @@ require 'routes.php';
             $success = '{"info":{"message":"Contact Added Successfully.","status":"success"}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -211,11 +211,11 @@ require 'routes.php';
              $success = '{"info":{"message":"'.sendSMS($mobile, $otp_code, false).'", "id":"'.$userId.'", "status":"success"}}';
              echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
-          echo '{"info":{"message":"'.$e->getMessage().'","status":"error"}}';
+          echo '{"info":{"message":"'.$e->getMessage().'","status":false}}';
         }
      }
      function resentOtp($mobile){
@@ -261,7 +261,7 @@ require 'routes.php';
                 $success = '{"info":{"message":"Your account has been created successfully.", "id":"'.$id.'", "status":"success"}}';
                 echo $success;
               }else{
-                $success = '{"info":{"message":"Invalid otp provided.", "id":"'.$id.'", "status":"error"}}';
+                $success = '{"info":{"message":"Invalid otp provided.", "id":"'.$id.'", "status":false}}';
                 echo $success;
               }
             } catch (Exception $e) {
@@ -281,7 +281,8 @@ require 'routes.php';
             $status='ACTIVE';
             $failImage=array();
             $fileList=array();
-            for ($i = 0; $i < count($_FILES['uploadimage']['name']); $i++){
+            if(count($_FILES)){
+              for ($i = 0; $i < count($_FILES['uploadimage']['name']); $i++){
                 $filename = basename($_FILES['uploadimage']['name'][$i]);
                 $filename=str_replace(" ","", $filename);
                 $uid=date('YmdHis');
@@ -294,9 +295,11 @@ require 'routes.php';
                 }else{
                     array_push($failImage, $filename);
                 }
+              }
+            }else{
+              //array_push($fileList, 'emptycard.png');
             }
-            $filename=$isUploaded ? $filename: null;
-           
+            
             $sql="insert into properties(id,title,type,description,cost,location,status,created_date,modified_date,image) values ('".getGUID()."' ,'".$title."' ,'".$type."' ,'".$desc."','".$cost."','".$location."','".$status."','".date("Y-m-d h:i:s")."','".date("Y-m-d h:i:s")."','".implode(",",$fileList)."')";
             $db = getConnection();
             $result = $db->query($sql);
@@ -326,10 +329,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Added Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Added Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -350,10 +353,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Added Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Added Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -373,10 +376,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Added Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Added Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -389,14 +392,14 @@ require 'routes.php';
         try {
           if($newsInfo && $newsInfo->news){
            $news=$newsInfo->news;
-            $sql="insert into news(id,news,created_date,status) values ('".getGUID()."' ,'".$news."','".date("Y-m-d h:i:s")."','ACTIVE')";
+            $sql="insert into news(id,news,created_date,modified_date,status) values ('".getGUID()."' ,'".$news."','".date("Y-m-d h:i:s")."','".date("Y-m-d h:i:s")."','ACTIVE')";
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"News Created Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"News Created Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -411,22 +414,45 @@ require 'routes.php';
             $desc=$_POST['desc'];
             $location=$_POST['location'];
             $cost=$_POST['price'];
-            $id=$_POST['id'];
-            $filename = basename($_FILES['uploadimage']['name']);
-            $filename=str_replace(" ","",$filename);
+            $availableFile =$_POST['imagelist'];
+            $deletedImage =$_POST['deletedImage'];
          	  $uid=date('YmdHis');
-         	  $filename=$uid."_".$filename;
-            $newname = dirname(__FILE__).'/upload/'.$filename;
-            $isUploaded=false;
-            $status='active';
-            if (move_uploaded_file($_FILES['uploadimage']['tmp_name'],$newname)) {
-                $isUploaded=true;
+            $availableFile=explode(",", $availableFile);
+            $deletedImage=explode(",", $deletedImage);
+
+         	  $failImage=array();
+            $fileList=array();
+
+            $fileList=array_merge($fileList, $availableFile);
+            if(count($_FILES)){
+              for ($i = 0; $i < count($_FILES['uploadimage']['name']); $i++){
+                  $filename = basename($_FILES['uploadimage']['name'][$i]);
+
+                  $filename=str_replace(" ","", $filename);
+                  $uid=date('YmdHis');
+                  $filename=$uid."_".$filename;
+                  $newname = dirname(__FILE__).'/upload/'.$filename;
+                  
+                  if (move_uploaded_file($_FILES['uploadimage']['tmp_name'][$i],$newname)) {
+                      $isUploaded=true;
+                      array_push($fileList, $filename);
+                  }else{
+                      array_push($failImage, $filename);
+                  }
+                
+              }
             }
-            $image=$isUploaded ? "image=".$filename:'';
-            $sql="update properties set title='".$title."',description='".$desc."',cost='".$cost."',location='".$location."',modified_date='".date("Y-m-d h:i:s")."','".$image."') where id='".$id."'";
+            $sql="update properties set title='".$title."',description='".$desc."',cost='".$cost."',location='".$location."',modified_date='".date("Y-m-d h:i:s")."', image='".implode(",",$fileList)."' where id='".$id."'";
             $db = getConnection();
             $result = $db->query($sql);
             $db = null;
+
+            for($i=0; $i < count($deletedImage); $i++){
+              if($deletedImage[$i]!==""){
+                $deleteFileName = dirname(__FILE__).'/upload/'.$deletedImage[$i];
+                unlink($deleteFileName);
+             }
+            }
             $success = '{"info":{"message":"Property Updated Successfully.","status":true}}';
             echo $success;
          }else{
@@ -452,10 +478,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Updated Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -476,10 +502,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Updated Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -499,10 +525,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Price Updated Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Price Updated Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -519,10 +545,10 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"News Updated Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"News Updated Successfully.","status":true}}';
             echo $success;
          }else{
-           echo '{"info":{"message":"Mandatory fields are  missing.","status":"error"}}';
+           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
@@ -652,7 +678,7 @@ require 'routes.php';
        try {
          if($searchInfo->flag){
            $location=implode("','",$searchInfo->locationList);
-           $sql="select * from properties where type='".$id."' && location in('".$location."' && status='ACTIVE')";
+           $sql="select * from properties where type='".$id."' && location in('".$location."' && status='ACTIVE') order by sno asc";
            $db = getConnection();
            $stmt = $db->query($sql);
            $result = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -689,7 +715,7 @@ require 'routes.php';
 
      function getLocation($type){
        try {
-         $sql="select DISTINCT location from properties where type='".$type."' && status='ACTIVE'";
+         $sql="select DISTINCT location from properties where type='".$type."' && status='ACTIVE' order by location asc";
          $db = getConnection();
          $stmt = $db->query($sql);
          $result = $stmt->fetchAll(PDO::FETCH_OBJ);
