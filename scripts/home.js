@@ -1,7 +1,52 @@
 $(document).ready(function(){
-      villbizApp.initialize();
-      $( "#header" ).load( "app/views/home/header.html" );
-      $( "#mainViewContainer" ).load( "app/views/home/main.html", function(){
+        villbizApp.initialize();
+        $( "#header" ).load( "views/home/header.html", function(e){
+        var type=docCookies.getItem('type'), url='views/home/main.html';
+        $("#main").closest('li').addClass('active').siblings().removeClass('active');
+        switch(type){
+                case 'coffee': {
+                            url='views/properties/coffee.html';
+                            $("#properties").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                      }
+                case 'agriculture': {
+                            url='views/properties/coffee.html';
+                            $("#properties").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }     
+                case 'tea': {
+                            url='views/properties/coffee.html';
+                            $("#properties").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+                case 'house': {
+                            url='views/properties/coffee.html';
+                            $("#properties").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+                case 'business': {
+                            url='views/properties/coffee.html';
+                            $("#properties").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+                case 'price': {
+                            url='views/coffeenpapper/price.html';
+                            $("#price").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+                case 'service': {
+                            url='views/service/services.html';
+                            $("#service").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+                case 'contact': {
+                            url='views/contactus/contact.html';
+                            $("#contact").closest('li').addClass('active').siblings().removeClass('active');
+                            break;
+                          }
+        }
+        
+        $( "#mainViewContainer" ).load(url, function(){
         $('.slider').slider({full_width: true});
         $('select').material_select();
         $('ul.tabs').tabs();
@@ -12,7 +57,8 @@ $(document).ready(function(){
             $('.view-detail-slider').slider('pause');
         });
       });
-      $( "#footer" ).load( "app/views/home/footer.html" );
+        });
+      $( "#footer" ).load( "views/home/footer.html" );
   });
 function searchProperties(isSearchById){
   var locObj={}, type='/null';
@@ -28,12 +74,12 @@ function searchProperties(isSearchById){
       
       villbizApp.callPost('/php/search'+type, JSON.stringify(locObj), function(resp){
         resp=JSON.parse(resp);
-         $( "#mainViewContainer" ).load( "app/views/properties/coffee.html", function(){
+         $( "#mainViewContainer" ).load( "views/properties/coffee.html", function(){
             var htmlList='';
              resp.result.forEach(function(value, indx, arr){
                var imgList=(value.image).split(',');
                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
-                      +'<a href="detail.html" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
+                      +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
                       +'<div class="card-content"><div class="card-content-body"><div class="property-title font-600">'+value.title+'</div>'
                     +'<div class="property-divider"></div><div class="property-location"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
                     +'<div class="property-price font-600"><i class="jif-rupee"></i><span>'+value.cost+'</span></div></div>'
@@ -41,7 +87,8 @@ function searchProperties(isSearchById){
                     +'<a href="javascript:showPropDetail(\''+value.sno+'\', \''+value.title+'\',\''+value.description+'\', \''+value.cost+'\', \''+value.type+'\', \''+value.image+'\', \''+value.location+'\');" class="waves-effect waves-light btn modal-trigger">View Detail</a></div></div></div></div></div>';
              });
              $('#properties-list').html(htmlList);
-             switch(resp.result[0].type){
+             try{
+              switch(resp.result[0].type){
                 case 'coffee': $('#prop-name-count').html('Coffee Estates - <span>'+resp.result.length+' Items</span>');
                       break;
                 case 'agriculture': $('#prop-name-count').html('Agriculture Land - <span>'+resp.result.length+' Items</span>');
@@ -53,6 +100,10 @@ function searchProperties(isSearchById){
                 case 'business': $('#prop-name-count').html('Business - <span>'+resp.result.length+' Items</span>');
                       break;
              }
+             }catch(e){
+              console.log(e.message);
+             }
+             
          });
       });
       return false;

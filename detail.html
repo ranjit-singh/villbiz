@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vilbiz</title>
+    <meta charset="UTF-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta id="viewport" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+
+  	<link rel="shortcut icon" href="assets/images/fav.png">
+    <link href="assets/fonts/css/font.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles/materialize.css">
+	  <link rel="stylesheet" type="text/css" href="styles/style.css">
+  </head>
+  <body>
+    <!--[if lt IE 10]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+    <div class="wrapper main-view-container">
+      <div id="header"></div>
+      <div id="mainViewContainer">
+      <div class="view-detail-ext-container">
+		<h5 class="text-center view-detail-modal-title" id="prop-name"></h5>
+		<hr>
+		<div class="container">
+			<div class="row">
+				<div class="col s12 l5">
+					<div class="slider view-detail-slider">
+					    <ul class="slides" id="img-list-banner">
+
+					    </ul>
+					</div>
+					<hr>
+					<div class="col s12 no-padding">
+						<div class="view-detail-ad-id" id="prop-aid"></div>
+					</div>
+					<div class="col 12 no-padding view-detail-left">
+						<h5>Information</h5>
+						<div class="view-detail-location">
+							<i class="jif-location text-green"></i>
+							<span class="font-600">Location : </span>
+							<span id="location-detail"></span>
+						</div>
+						<div class="view-detail-location margin-top-10">
+							<i class="jif-rupee text-green"></i>
+							<span class="font-600">Price : </span>
+							<span id="prop-cost"></span>
+						</div>
+					</div>
+					<hr>
+					<div class="col s12 no-padding view-detail-left">
+						<h5>Contact Us</h5>
+						<div class="view-detail-location">
+							<div class="left view-detail-ph">
+								<i class="jif-call text-green"></i>
+								<span>+91 9741085719</span>
+							</div>
+							<div class="left">
+								<i class="jif-mail text-green"></i>
+								<span>estates@villbiz.com</span>
+							</div>
+						</div>
+					</div>
+					<hr>
+					<div class="col s12 no-padding view-detail-left">
+						<div class="view-detail-location margin-top-10">
+							<div class="left view-detail-sm margin-right-10 social-media-prop-share">
+								<iframe id="fb-share-iframe" width="59" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+							</div>
+							<div class="left view-detail-sm">
+								<!-- Place this tag where you want the share button to render. -->
+								<div class="g-plus" data-action="share" data-annotation="none" id="google-plus-share"></div>
+
+								<!-- Place this tag after the last share tag. -->
+								<script type="text/javascript">
+								  (function() {
+								    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+								    po.src = 'https://apis.google.com/js/platform.js';
+								    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+								  })();
+								</script>
+							</div>
+						</div>
+					</div>
+					<hr class="no-margin">
+				</div>
+				<div class="col s12 l7 view-detail-prop-maindetail">
+					<h5 class="text-dark" id="prop-title"></h5>
+					<div class="green-orange-border-sep"></div>
+					<p id="prop-description">
+						
+					</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+      </div>
+      <div id="footer"></div>
+    </div>
+    <div id="loader-wrapper">
+    <div id="loader"></div>
+    </div>
+    <script src="scripts/jquery.min.js"></script>
+	  <script src="scripts/materialize.min.js"></script>
+    <script src="scripts/cookies.js"></script>
+    <script src="scripts/common.js"></script>
+    <script src="scripts/detail.js"></script>
+  </body>
+</html>

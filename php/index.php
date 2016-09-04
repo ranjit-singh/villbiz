@@ -162,7 +162,21 @@ require 'routes.php';
         //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
         echo '{"error":{"text":'. $e->getMessage() .'}}';
        }
-     }
+  }
+
+  function getUserProfile($id) {
+        try {
+        $sql = "select id,name,email,mobile FROM user_signup where id='".$id."'";
+        $db = getConnection();
+        $stmt = $db->query($sql);
+        $profile = $stmt->fetchAll(PDO::FETCH_OBJ);
+        $db = null;
+        echo '{"profile": ' . json_encode($profile[0]) . '}';
+        } catch(PDOException $e) {
+        //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+       }
+  }
      function addContactus(){
       $contactInfo = json_decode(file_get_contents("php://input"));
       //echo json_encode($contactInfo);
@@ -178,7 +192,7 @@ require 'routes.php';
              $db = getConnection();
              $result = $db->query($sql);
              $db = null;
-            $success = '{"info":{"message":"Contact Added Successfully.","status":"success"}}';
+            $success = '{"info":{"message":"Contact Added Successfully.","status":true}}';
             echo $success;
          }else{
            echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
@@ -208,7 +222,7 @@ require 'routes.php';
              $sqlOtp="insert into mobileotp(id,otp,mobile,status) values ('".$userId."' ,'".$otp_code."','".$mobile."','ACTIVE')";
              $result = $db->query($sqlOtp);
              $db = null;
-             $success = '{"info":{"message":"'.sendSMS($mobile, $otp_code, false).'", "id":"'.$userId.'", "status":"success"}}';
+             $success = '{"info":{"message":"'.sendSMS($mobile, $otp_code, false).'", "id":"'.$userId.'", "status":true}}';
              echo $success;
          }else{
            echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
@@ -231,7 +245,7 @@ require 'routes.php';
              $result = $db->query($sqlOtp);
              $db = null;
           }
-          $smsMessage = urlencode('Hello, this is your one-time password '.$otp.' to verify user registration. Thank you!');
+          $smsMessage = urlencode('One Time Password for VILLBZ is '.$otp.'. Please use the password to verify user registration Thank you!');
           $smsUrl='http://ntransapi.alertsindia.in/Desk2web/SendSMS.aspx?UserName=villbz&password=hrbcbncns&MobileNo='.$mobile.'&SenderID=VILLBZ&CDMAHeader=VILLBZ&Message='.$smsMessage.'&isFlash=False';
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $smsUrl);
@@ -258,7 +272,7 @@ require 'routes.php';
                 $updateSql = "update user_signup set status='ACTIVE' where id='".$id."'";
                 $stmt = $db->query($updateSql);
                 $db = null;
-                $success = '{"info":{"message":"Your account has been created successfully.", "id":"'.$id.'", "status":"success"}}';
+                $success = '{"info":{"message":"Your account has been created successfully.", "id":"'.$id.'", "status":true}}';
                 echo $success;
               }else{
                 $success = '{"info":{"message":"Invalid otp provided.", "id":"'.$id.'", "status":false}}';

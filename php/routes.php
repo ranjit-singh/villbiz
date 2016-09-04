@@ -15,6 +15,7 @@ $app->get('/verifyotp/:id/:otp','verifyOtp');
 $app->get('/resentotp/:mobile','resentOtp');
 $app->get('/properties/search/:type','propertiesSearch');
 $app->get('/location/:type','getLocation');
+$app->get('/userprofile/:id','getUserProfile');
 
 $app->post('/createuser', 'addUsers');
 $app->post('/login','userLogin');

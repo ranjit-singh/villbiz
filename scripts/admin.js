@@ -56,6 +56,7 @@ function validate_filetype(fext, ftype) {
     });
     function init(){
       $('#btn-prop').val('ADD PROPERTY');
+      $('#prop-img-list').html('');
       $('#create-properties-form').unbind('submit').submit(function(evt){
           evt.stopPropagation();
           addProperties(true, $('#propType').val());
@@ -310,7 +311,7 @@ function validate_filetype(fext, ftype) {
     function editProperties(id, title, location, price, img, type){
         var formdata = new FormData();
             deletedImage=[];
-            $('#propType').val(type);
+            $('#propType').val(type).change();
             $('#btn-prop').val('UPDATE PROPERTY');
             for(var i in flist){
               formdata.append('uploadimage[]', flist[i]);

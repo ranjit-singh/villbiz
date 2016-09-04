@@ -1,8 +1,10 @@
 	<div class="section bg-white price-container" ng-controller="PriceController">
 		<div class="pricingcontainer">
-			<div class="logedin-user">
-				<i class="jif-user text-green" style="margin-right: 5px; font-size: 14px;"></i><a class='dropdown-button' href='javascript:void(0)' data-activates='logedinuser'>User Name<i class="jif-down-open dropdown-user"></i></a>
-
+			<div class="logedin-user hide">
+				<i class="jif-user text-green" style="margin-right: 5px; font-size: 14px;"></i>
+		
+				<a class='dropdown-button' href='javascript:void(0)' data-activates='logedinuser' id="user-name">User Name</a><i class="jif-down-open dropdown-user"></i>
+		
 				<!-- Dropdown Structure -->
 				<ul id='logedinuser' class='dropdown-content logedinuser-dropdown'>
 					<li><a href="#change-password-modal" class="modal-trigger"><i class="jif-cog"></i>Settings</a></li>
@@ -73,7 +75,7 @@
 						</div>
 						<div class="col s12 price-news-block" onload="getNews();">
 						<h5>News</h5>
-						<p class="no-margin" id="newsList">Pepper markets ruled steady following no trading activities due to non-arrival. No sellers were forthcoming at current terminal market rates. They were quoting ₹705 and ₹710 a kg, while buyers were at ₹700 a kg. Processors were reportedly buying exchange released pepper and farm grade pepper directly from primary markets.</p>
+						<p class="no-margin" id="newsList"></p>
 						</div>
 					</div>
 				</div>
@@ -116,7 +118,7 @@
 			</div>
 			</form>
 			<form class="col s12" name="resetForm" onsubmit="return userResetPassword();" method="post">
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="requestForReset" class="col s12 no-padding signup-otp-box hide">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
@@ -137,7 +139,7 @@
 			</div>
 			</form>
 			<form class="col s12" name="otpResetForm" onsubmit="return passwordReset();" method="post">
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="verifyResetOtp" class="col s12 no-padding signup-otp-box hide">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row no-margin">
 			        <div class="input-field col s12">
@@ -159,7 +161,7 @@
 			</div>
 			</form>
 			<form class="col s12" name="resetPassForm" onsubmit="return userSetPassword();" method="post">
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="setNewPassword" class="col s12 no-padding signup-otp-box hide">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
@@ -185,11 +187,11 @@
 		      	</div>
 			</div>
 			</form>
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="resetsucess" class="col s12 no-padding signup-otp-box hide">
 				<h5 class="text-center">Congratulations!</h5>
 				<h6 class="text-center">Your password has been reset.</h6>
 				<h6 class="text-center forgor-pwd-success">
-					<a class="text-green" href="javascript:void(0)">Login</a>
+					<a class="text-green" href="javascript:showLoginForm()">Login</a>
 				</h6>
 			</div>
 	</div>
@@ -268,7 +270,7 @@
 			</div>
 			</form>
 			<form class="col s12" name="otpSignupForm" onsubmit="return setPassword();" method="post">
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="setNewPassword" class="col s12 no-padding signup-otp-box hide">
 				<h4 class="text-center text-green">Create Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
@@ -294,11 +296,11 @@
 				</div>
 			</div>
 			</form>
-			<div class="col s12 no-padding signup-otp-box hide">
+			<div id="signupsucess" class="col s12 no-padding signup-otp-box hide">
 				<h5 class="text-center">Congratulations!</h5>
 				<h6 class="text-center">Your Account has been created.</h6>
 				<h6 class="text-center forgor-pwd-success">
-					<a class="text-green" href="#">Login</a>
+					<a class="text-green" href="javascript:showLoginForm()">Login</a>
 				</h6>
 			</div>
 	</div>

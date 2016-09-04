@@ -3,6 +3,12 @@ $(document).ready(function(){
 	$(".dropdown-button").dropdown({hover: true});
 	$('.modal-trigger').leanModal();
   if(docCookies.getItem('PHPSESSID')){
+    $('.logedin-user').removeClass('hide');
+    villbizApp.callGet('/php/userprofile/'+docCookies.getItem('uid'), function(resp){
+      resp=JSON.parse(resp);
+      villbizApp.setData('profile', resp.profile);
+      $('#user-name').html(resp.profile.name);
+    });
     init();
   }else{
     $('#login-modal').openModal();
@@ -38,10 +44,19 @@ function loadPrice(evt){
       	if(evt.checked){
       		$('#coffeeTable').hide();
       		$('#pepperTable').show();
-      		villbizApp.callGet('/php/pepper/price', pepperCallBack);
+          if(docCookies.getItem('PHPSESSID')){
+            villbizApp.callGet('/php/pepper/price', pepperCallBack);
+          }else{
+            $('#login-modal').openModal();
+          }
       	}else{
-      		$('#pepperTable').hide();
-      		$('#coffeeTable').show();
+          $('#pepperTable').hide();
+          $('#coffeeTable').show();
+          if(docCookies.getItem('PHPSESSID')){
+            //init();
+          }else{
+            $('#login-modal').openModal();
+          }
       	}
  }
 
@@ -117,15 +132,21 @@ function loadPrice(evt){
           villbizApp.callPost('/php/login', JSON.stringify(userObj), function(response){
             response=JSON.parse(response);
             if(response.status){
-             $('#login-modal').closeModal();
-             init();
+              $('#user-name').html(response.profile.name);
+              villbizApp.setData('profile', response.profile);
+              docCookies.setItem('uid', response.profile.id);
+              $('.logedin-user').removeClass('hide');
+              $('#login-modal').closeModal();
+              init();
             }
           });
       return false;
   }
   function logOut(){
       villbizApp.callGet('/php/logout', function(resp){
+        $('.logedin-user').addClass('hide');
         docCookies.removeItem('PHPSESSID');
+        docCookies.removeItem('uid');
         location.replace('/villbiz');
       });
     }
