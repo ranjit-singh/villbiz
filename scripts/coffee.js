@@ -59,8 +59,8 @@ $(document).ready(function(){
                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
                       +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
                       +'<div class="card-content"><div class="card-content-body"><div class="property-title font-600">'+value.title+'</div>'
-                    +'<div class="property-divider"></div><div class="property-location"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
-                    +'<div class="property-price font-600"><i class="jif-rupee"></i><span>'+value.cost+'</span></div></div>'
+                    +'<div class="property-divider"></div><div class="property-location text-ellipsis"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
+                    +'<div class="property-price font-600 text-ellipsis"><i class="jif-rupee"></i>&nbsp;<span>'+value.cost+'</span></div></div>'
                     +'<div class="card-content-footer"><div class="property-detail-btn">'
                     +'<a href="javascript:showPropDetail(\''+value.sno+'\', \''+value.title+'\',\''+value.description+'\', \''+value.cost+'\', \''+value.type+'\', \''+value.image+'\', \''+value.location+'\');" class="waves-effect waves-light btn modal-trigger">View Detail</a></div></div></div></div></div>';
              });
