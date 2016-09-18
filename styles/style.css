@@ -163,6 +163,11 @@ hr {
 .block-display {
 	display: block !important;
 }
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .green-orange-border-sm {
 	width: 80px;
 	height: 10px;
@@ -2187,4 +2192,18 @@ animation: spin 1.5s linear infinite;
 }
 .social-media-prop-share {
 	
+}
+.pricing-emptystate {
+	padding: 130px 0;
+}
+.error-msg {
+	font-size: 14px;
+	color: #d34836;
+	margin: 0;
+}
+.contactus-successmsg {
+	margin: 50px 0;
+}
+.gplus-icon > div, .gplus-icon > div iframe {
+	width: 70px !important;
 }

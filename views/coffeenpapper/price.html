@@ -13,7 +13,7 @@
 				</ul>
 			</div>
 			<div class="row">
-				<div class="col s12">
+				<div class="col s12"><!-- hide this when empty state -->
 					<div class="col s12 l9">
 						<h4 class="text-center text-dark">COFFEE &amp; PEPPER PRICE</h4>
 						<hr>
@@ -79,6 +79,9 @@
 						</div>
 					</div>
 				</div>
+				<div class="pricing-emptystate hides">
+					<h4 class="center">Please <a href="javascript:redirectLocation('views/coffeenpapper/price.html', 'price')">Login</a> to view Coffee and Pepper Prices</h4>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -101,6 +104,11 @@
 			          <input type="password" class="validate no-margin" id="loginpassword" required>
 			          <label for="loginpassword">Password<span class="text-red">*</span></label>
 			        </div>
+		      	</div>
+		      	<div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Invalid Mobile Number or Password</p>
+		      		</div>
 		      	</div>
 		      	<div class="row margin-bottom-10">
 			      	<div class="input-field col s12">
@@ -126,6 +134,11 @@
 			          <label for="first_name">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 			    </div>
+			    <div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Mobile Number not Registered</p>
+		      		</div>
+		      	</div>
 			    <div class="row margin-bottom-10">
 			      	<div class="input-field col s12">
 			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
@@ -148,6 +161,11 @@
 			        </div>
 			        <div class="text-grey resend-otp text-green">Resend OTP?</div>
 			    </div>
+			    <div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Invalid OTP.</p>
+		      		</div>
+		      	</div>
 			    <div class="row margin-bottom-10">
 			      	<div class="input-field col s12">
 			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
@@ -175,6 +193,11 @@
 			          <label for="first_name">Re Enter Password<span class="text-red">*</span></label>
 			        </div>
 			    </div>
+			    <div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Passwords doesn't match</p>
+		      		</div>
+		      	</div>
 			    <div class="row margin-bottom-10">
 			      	<div class="input-field col s12">
 			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
@@ -205,6 +228,11 @@
 		<form class="col s12" name="signupForm" onsubmit="return userSignup();" method="post" id="signupForm">
 			<div class="col s12 no-padding">
 				<h4 class="text-center text-green">Sign Up</h4>
+				<div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Mobile Number already Registered.</p>
+		      		</div>
+		      	</div>
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
 			          <input type="text" class="validate no-margin" required name="fullname" id="fullname">
@@ -257,6 +285,11 @@
 			        </div>
 			        <div class="text-grey resend-otp text-green" onclick="reSentOtp()">Resend OTP?</div>
 			    </div>
+			    <div class="row">
+		      		<div class="col s12">
+		      			<p class="error-msg">Invalid OTP.</p>
+		      		</div>
+		      	</div>
 			    <div class="row margin-bottom-10">
 			      	<div class="input-field col s12">
 			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
