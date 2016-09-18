@@ -4,6 +4,8 @@ $(document).ready(function(){
 	$('.modal-trigger').leanModal();
   if(docCookies.getItem('PHPSESSID')){
     $('.logedin-user').removeClass('hide');
+    $('.pricing-emptystate').addClass('hide');
+    $('#login-required').fadeIn('500');
     villbizApp.callGet('/php/userprofile/'+docCookies.getItem('uid'), function(resp){
       resp=JSON.parse(resp);
       villbizApp.setData('profile', resp.profile);
@@ -11,10 +13,13 @@ $(document).ready(function(){
     });
     init();
   }else{
+    $('#login-required').fadeOut('500');
     $('#login-modal').openModal();
   }
 });
 function init(){
+    var utc = new Date().toJSON().slice(0,10);
+    $('.price-date').html(utc);
     villbizApp.callGet('/php/coffee/price', coffeeCallBack);
       function coffeeCallBack(response){
         response=JSON.parse(response);
@@ -72,16 +77,22 @@ function loadPrice(evt){
   function showLoginForm(){
     $('#signup-modal').closeModal();
     $('#login-modal').openModal();
+    $('#user-login-form').removeClass('hide');
+    $('#user-forgot-password-form').addClass('hide');
   }
   function showSignupForm(){
     $('#login-modal').closeModal();
     $('#signup-modal').openModal();
   }
   
+  function showForgotPasswordForm(){
+    $('#user-login-form').addClass('hide');
+    $('#user-forgot-password-form').removeClass('hide');
+  }
   function userSignup(){
     if($('#password').val()!=$('#confirmpassword').val())
     {
-      alert("Password is not matching. please confirm correct password");
+      $('#signup-error-message').removeClass('hide').find('p').html('Passwords does not match.');
       return false;
     }
     var usrInfo={};
@@ -98,7 +109,7 @@ function loadPrice(evt){
             $('#signupForm').fadeOut('500');
             $('#userOtpApproval').fadeIn('500');
           }else{
-            alert(resp.info.message);
+            $('#signup-error-message').removeClass('hide').find('p').html(resp.info.message);
           }
         });
       return false;
@@ -112,16 +123,65 @@ function loadPrice(evt){
             $('#userOtpApproval').addClass('hide');
             $('#signupsucess').removeClass('hide');
           }else{
-            alert(response.info.message);
+            $('#otp-error-message').removeClass('hide');
           }
         });
       return false;
   }
   function reSentOtp(){
     villbizApp.callGet('/php/resentotp/'+villbizApp.getData('mobile'), function(response){
-          //response=JSON.parse(response);
+          response=JSON.parse(response);
+
         });
   }
+
+  function userResetPassword(){
+     villbizApp.setData('mobile', $('#forgot-password-mobile').val());
+     villbizApp.callGet('/php/resentotp/'+$('#forgot-password-mobile').val(), function(response){
+          response=JSON.parse(response);
+          if (response.info.status) {
+              $('#user-forgot-password-form').addClass('hide');
+              $('#verifyResetOtp').removeClass('hide');
+          }else{
+              $('#forgot-error-message').removeClass('hide');
+          }
+     });
+     return false;
+  }
+
+  function verifyPasswordResetOtp(){
+    villbizApp.callGet('/php/verifyresetpasswordotp/'+villbizApp.getData('mobile')+'/'+$('#forgot-password-otp').val(), function(response){
+          response=JSON.parse(response);
+          if(response.info.status){
+            $('#verifyResetOtp').addClass('hide');
+            $('#setNewPassword').removeClass('hide');
+          }else{
+            $('#verify-password-reset-otp').removeClass('hide');
+          }
+     });
+    return false;
+  }
+
+  function userSetPassword(){
+    var newPass=$('#new-password').val(), cnewPass=$('#confirm-new-password').val();
+    if(newPass!=cnewPass)
+    {
+      $('#password-mismatch-error-message').removeClass('hide');
+      return false;
+    }
+    var resetPassObj={};
+    resetPassObj.password=newPass;
+    resetPassObj.mobile=villbizApp.getData('mobile');
+    villbizApp.callPost('/php/setpassword', JSON.stringify(resetPassObj), function(response){
+      response=JSON.parse(response);
+      if(response.info.status){
+        $('#setNewPassword').addClass('hide');
+        $('#resetsucess').removeClass('hide');
+      }
+    });
+    return false;
+  }
+
   function login() {
     var username = $("#loginusername").val();
     var password = $("#loginpassword").val();
@@ -132,12 +192,16 @@ function loadPrice(evt){
           villbizApp.callPost('/php/login', JSON.stringify(userObj), function(response){
             response=JSON.parse(response);
             if(response.status){
+              $('#login-required').fadeIn('500');
               $('#user-name').html(response.profile.name);
+              $('.pricing-emptystate').addClass('hide');
               villbizApp.setData('profile', response.profile);
               docCookies.setItem('uid', response.profile.id);
               $('.logedin-user').removeClass('hide');
               $('#login-modal').closeModal();
               init();
+            }else{
+              $('#error-message').removeClass('hide');
             }
           });
       return false;

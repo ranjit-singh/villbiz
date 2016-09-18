@@ -13,7 +13,7 @@
 				</ul>
 			</div>
 			<div class="row">
-				<div class="col s12"><!-- hide this when empty state -->
+				<div class="col s12" id="login-required"><!-- hide this when empty state -->
 					<div class="col s12 l9">
 						<h4 class="text-center text-dark">COFFEE &amp; PEPPER PRICE</h4>
 						<hr>
@@ -79,7 +79,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="pricing-emptystate hides">
+				<div class="pricing-emptystate">
 					<h4 class="center">Please <a href="javascript:redirectLocation('views/coffeenpapper/price.html', 'price')">Login</a> to view Coffee and Pepper Prices</h4>
 				</div>
 			</div>
@@ -90,7 +90,7 @@
 <div id="login-modal" class="modal login-sm-modal">
 	<div class="modal-content login-box">
 		<i class="jif-cancel-1 modal-close-btn modal-close"></i>
-		<form class="col s12" name="loginForm" onsubmit="return login();" method="post">
+		<form id="user-login-form" class="col s12" name="loginForm" onsubmit="return login();" method="post">
 			<div class="col s12 no-padding">
 				<h4 class="text-center">Log In</h4>
 				<div class="row margin-bottom-10">
@@ -105,7 +105,7 @@
 			          <label for="loginpassword">Password<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
-		      	<div class="row">
+		      	<div class="row hide" id="error-message">
 		      		<div class="col s12">
 		      			<p class="error-msg">Invalid Mobile Number or Password</p>
 		      		</div>
@@ -117,7 +117,7 @@
 		     	</div>
 		      	<div class="row no-margin">
 			      	<div class="left forgot-pwd-section no-padding">
-			      		<a href="#forgot-pwd-modal" class="text-grey">Forgot Password?</a>
+			      		<a href="javascript:showForgotPasswordForm();" class="text-grey">Forgot Password?</a>
 			      	</div>
 			      	<div class="right forgot-pwd-section">
 			      		Don't have an Account? <a href="javascript:showSignupForm();" class="text-green signup-link">Sign Up</a>
@@ -125,16 +125,16 @@
 		      	</div>
 			</div>
 			</form>
-			<form class="col s12" name="resetForm" onsubmit="return userResetPassword();" method="post">
-			<div id="requestForReset" class="col s12 no-padding signup-otp-box hide">
+			<form id="user-forgot-password-form" class="col s12 hide" name="resetForm" onsubmit="return userResetPassword();" method="post">
+			<div id="requestForReset" class="col s12 no-padding signup-otp-box">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" required>
-			          <label for="first_name">Mobile Number<span class="text-red">*</span></label>
+			          <input type="number" class="validate no-margin" id="forgot-password-mobile" required>
+			          <label for="forgot-password-mobile">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 			    </div>
-			    <div class="row">
+			    <div class="row hide" id="forgot-error-message">
 		      		<div class="col s12">
 		      			<p class="error-msg">Mobile Number not Registered</p>
 		      		</div>
@@ -146,22 +146,22 @@
 			    </div>
 			    <div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Don't have an Account? <a href="javascript:showSignup()" class="text-green signup-link">Sign Up</a>
+			      		Don't have an Account? <a href="javascript:showSignupForm()" class="text-green signup-link">Sign Up</a>
 			      	</div>
 		      	</div>
 			</div>
 			</form>
-			<form class="col s12" name="otpResetForm" onsubmit="return passwordReset();" method="post">
-			<div id="verifyResetOtp" class="col s12 no-padding signup-otp-box hide">
+			<form id="verifyResetOtp" class="col s12 hide" name="otpResetForm" onsubmit="return verifyPasswordResetOtp();" method="post">
+			<div class="col s12 no-padding signup-otp-box">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row no-margin">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" required>
-			          <label for="first_name">Enter the OTP sent at the given mobile number<span class="text-red">*</span></label>
+			          <input type="number" class="validate no-margin" id="forgot-password-otp" required>
+			          <label for="forgot-password-otp">Enter the OTP sent at the given mobile number<span class="text-red">*</span></label>
 			        </div>
-			        <div class="text-grey resend-otp text-green">Resend OTP?</div>
+			        <div class="text-grey resend-otp text-green" onclick="reSentOtp()">Resend OTP?</div>
 			    </div>
-			    <div class="row">
+			    <div class="row hide" id="verify-password-reset-otp">
 		      		<div class="col s12">
 		      			<p class="error-msg">Invalid OTP.</p>
 		      		</div>
@@ -173,27 +173,27 @@
 			    </div>
 			    <div class="row">
 			      	<div class="right forgot-pwd-section">
-			      		Don't have an Account? <a href="javascript:void(0)" class="text-green signup-link">Sign Up</a>
+			      		Don't have an Account? <a href="javascript:showSignupForm()" class="text-green signup-link">Sign Up</a>
 			      	</div>
 		      	</div>
 			</div>
 			</form>
-			<form class="col s12" name="resetPassForm" onsubmit="return userSetPassword();" method="post">
-			<div id="setNewPassword" class="col s12 no-padding signup-otp-box hide">
+			<form id="setNewPassword" class="col s12 hide" name="resetPassForm" onsubmit="return userSetPassword();" method="post">
+			<div class="col s12 no-padding signup-otp-box">
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" required>
-			          <label for="first_name">New Password<span class="text-red">*</span></label>
+			          <input type="password" class="validate no-margin" id="new-password" required>
+			          <label for="new-password">New Password<span class="text-red">*</span></label>
 			        </div>
 			    </div>
 			    <div class="row">
 			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" required>
-			          <label for="first_name">Re Enter Password<span class="text-red">*</span></label>
+			          <input type="password" class="validate no-margin" id="confirm-new-password" required>
+			          <label for="confirm-new-password">Re Enter Password<span class="text-red">*</span></label>
 			        </div>
 			    </div>
-			    <div class="row">
+			    <div class="row hide" id="password-mismatch-error-message">
 		      		<div class="col s12">
 		      			<p class="error-msg">Passwords doesn't match</p>
 		      		</div>
@@ -205,7 +205,7 @@
 			    </div>
 			    <div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Don't have an Account? <a href="javascript:void(0)" class="text-green signup-link">Sign Up</a>
+			      		Don't have an Account? <a href="javascript:showSignupForm()" class="text-green signup-link">Sign Up</a>
 			      	</div>
 		      	</div>
 			</div>
@@ -228,7 +228,7 @@
 		<form class="col s12" name="signupForm" onsubmit="return userSignup();" method="post" id="signupForm">
 			<div class="col s12 no-padding">
 				<h4 class="text-center text-green">Sign Up</h4>
-				<div class="row">
+				<div class="row hide" id="signup-error-message">
 		      		<div class="col s12">
 		      			<p class="error-msg">Mobile Number already Registered.</p>
 		      		</div>
@@ -285,7 +285,7 @@
 			        </div>
 			        <div class="text-grey resend-otp text-green" onclick="reSentOtp()">Resend OTP?</div>
 			    </div>
-			    <div class="row">
+			    <div class="row hide" id="otp-error-message">
 		      		<div class="col s12">
 		      			<p class="error-msg">Invalid OTP.</p>
 		      		</div>
@@ -297,34 +297,7 @@
 			    </div>
 			    <div class="row no-margin">
 			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
-			      	</div>
-				</div>
-			</div>
-			</form>
-			<form class="col s12" name="otpSignupForm" onsubmit="return setPassword();" method="post">
-			<div id="setNewPassword" class="col s12 no-padding signup-otp-box hide">
-				<h4 class="text-center text-green">Create Password</h4>
-				<div class="row">
-			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" required>
-			          <label for="first_name">New Password<span class="text-red">*</span></label>
-			        </div>
-			    </div>
-			    <div class="row">
-			        <div class="input-field col s12">
-			          <input type="password" class="validate no-margin" required>
-			          <label for="first_name">Re Enter Password<span class="text-red">*</span></label>
-			        </div>
-			    </div>
-			    <div class="row margin-bottom-10">
-			      	<div class="input-field col s12">
-			      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
-			      	</div>
-			    </div>
-			    <div class="row no-margin">
-			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
+			      		Have an Account? <a href="javascript:showLoginForm();" class="text-green signup-link">Login</a>
 			      	</div>
 				</div>
 			</div>
@@ -348,20 +321,20 @@
 			<div class="col s12 no-padding">
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="text" class="validate no-margin" value="Anusha" required>
-			          <label for="name">Name<span class="text-red">*</span></label>
+			          <input type="text" class="validate no-margin" id="username" required>
+			          <label for="username">Name<span class="text-red">*</span></label>
 			        </div>
 			    </div>
 		      	<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input disabled type="number" class="validate no-margin" value="8867571297">
+			          <input type="number" id="mobilenumber" class="validate no-margin" readonly>
 			          <label for="mobilenumber">Mobile Number</label>
 			        </div>
 		      	</div>
 		      	<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="email" class="validate no-margin" value="anusha@gmail.com">
-			          <label for="email">Email</label>
+			          <input type="email" id="useremail" class="validate no-margin">
+			          <label for="useremail">Email</label>
 			        </div>
 		      	</div>
 		      	<div class="row">
@@ -388,11 +361,6 @@
 			      	</div>
 		      	</div>
 			</div>
-			<div class="row no-margin">
-			      	<div class="right forgot-pwd-section">
-			      		Have an Account? <a href="#signup-modal" class="text-green signup-link">Login</a>
-			      	</div>
-				</div>
 		</form>
 	</div>
 </div>

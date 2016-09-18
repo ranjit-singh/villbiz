@@ -208,6 +208,7 @@ require 'routes.php';
         $userId=getGUID();
         $otp_code = mt_rand(10, 1100000);
         $apiKey = md5(uniqid(rand(), true));
+        $db = getConnection();
         try {
           if($userInfo && $userInfo->name && $userInfo->password && $userInfo->mobile){
            $name=$userInfo->name;
@@ -217,8 +218,22 @@ require 'routes.php';
            $isAdmin=$userInfo->isAdmin;
            $tokenKey=null;
            $icon=null;
+           $checkMobile="select mobile from user_signup where mobile='".$mobile."'";
+           $mobResult = $db->query($checkMobile);
+           $mobileCount  = count($mobResult->fetchAll(PDO::FETCH_OBJ));
+
+           $checkEmail="select email from user_signup where email='".$email."'";
+           $emailResult = $db->query($checkEmail);
+           $emailCount  = count($emailResult->fetchAll(PDO::FETCH_OBJ));
+           if($mobileCount > 0){
+            echo '{"info":{"message":"Mobile Number already Registered.","status":false}}';
+            return;
+           }else if($emailCount){
+            echo '{"info":{"message":"Email already Registered.","status":false}}';
+            return;
+           }
            $sql="insert into user_signup(id,name,email,mobile,password,isAdmin,tokenKey,created_date,modified_date,ip,status) values ('".$userId."' ,'".$name."' ,'".$email."' ,'".$mobile."','".$password."','".$isAdmin."','".$apiKey."','".date("Y-m-d h:i:s")."','".date("Y-m-d h:i:s")."','".$ip."','INACTIVE')";
-             $db = getConnection();
+             
              $result = $db->query($sql);
              $sqlOtp="insert into mobileotp(id,otp,mobile,status) values ('".$userId."' ,'".$otp_code."','".$mobile."','ACTIVE')";
              $result = $db->query($sqlOtp);
@@ -231,25 +246,39 @@ require 'routes.php';
         } catch (Exception $e) {
           error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           $rollBack="delete from user_signup where id='".$userId."';delete from mobileotp where id='".$userId."'";
-          $db = getConnection();
           $result = $db->query($rollBack);
+          $db = null;
           echo '{"info":{"message":"'.$e->getMessage().'","status":false}}';
         }
      }
      function resentOtp($mobile){
-          $otp_code = mt_rand(10, 1100000);
-          sendSMS($mobile, $otp_code, true);
+          try {
+              $sql = "select * from user_signup where mobile='".$mobile."'";
+              $db = getConnection();
+              $stmt = $db->query($sql);
+              $mobOtp = $stmt->fetchAll(PDO::FETCH_OBJ);
+              $count  = count($mobOtp);
+              if($count > 0){
+                 $otp_code = mt_rand(10, 1100000);
+                 echo '{"info":{"message":"'.sendSMS($mobile, $otp_code, true).'", "mobile":"'.$mobile.'", "status":true}}';
+              }else{
+                 echo '{"info":{"message":"Mobile Number not Registered","status":false}}';
+              }
+             
+          } catch (Exception $e) {
+            echo "Error in sms sent ".$e->getMessage();
+          }  
      }
      function sendSMS($mobile, $otp, $isReSent)
       {
         try {
           if($isReSent){
-             $sqlOtp="update mobileotp set otp='".$otp."' where mobile='".$mobile."'";
+             $sqlOtp="update mobileotp set otp='".$otp."', status='ACTIVE' where mobile='".$mobile."'";
              $db = getConnection();
              $result = $db->query($sqlOtp);
              $db = null;
           }
-          $smsMessage = urlencode('One Time Password for VILLBZ is '.$otp.'. Please use the password to verify user registration Thank you!');
+          $smsMessage = urlencode('One Time Password for VILLBIZ is '.$otp.'. Please use the password to verify user registration Thank you!');
           $smsUrl='http://ntransapi.alertsindia.in/Desk2web/SendSMS.aspx?UserName=villbz&password=hrbcbncns&MobileNo='.$mobile.'&SenderID=VILLBZ&CDMAHeader=VILLBZ&Message='.$smsMessage.'&isFlash=False';
           $ch = curl_init();
           curl_setopt($ch, CURLOPT_URL, $smsUrl);
@@ -285,6 +314,52 @@ require 'routes.php';
             } catch (Exception $e) {
               echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
             }
+     }
+
+     function verifyResetPasswordOtp($mobile, $otp){
+            try {
+             $sql = "select * from mobileotp where otp='".$otp."' && status='ACTIVE'";
+              $db = getConnection();
+              $stmt = $db->query($sql);
+              $mobOtp = $stmt->fetchAll(PDO::FETCH_OBJ);
+              $count  = count($mobOtp);
+              if($count > 0){
+                $sql = "update mobileotp set status='INACTIVE' where mobile='".$mobile."'";
+                $stmt = $db->query($sql);
+                $updateSql = "update user_signup set status='ACTIVE' where mobile='".$mobile."'";
+                $stmt = $db->query($updateSql);
+                $db = null;
+                $success = '{"info":{"message":"Reset Your New Password.", "mobile":"'.$mobile.'", "status":true}}';
+                echo $success;
+              }else{
+                $success = '{"info":{"message":"Invalid otp provided.", "mobile":"'.$mobile.'", "status":false}}';
+                echo $success;
+              }
+            } catch (Exception $e) {
+              echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+            }
+     }
+
+     function setNewPassword(){
+        $passInfo = json_decode(file_get_contents("php://input"));
+        try {
+          if($passInfo->password && $passInfo->mobile){
+              $password=$passInfo->password;
+              $mobile=$passInfo->mobile;
+
+              $sql="update user_signup set password='".md5($password)."' where mobile='".$mobile."'";
+              $db = getConnection();
+              $result = $db->query($sql);
+              $db = null;
+              $success = '{"info":{"message":"Password Updated Successfully.","status":true}}';
+              echo $success;
+         }else{
+              echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
+         }
+        } catch (Exception $e) {
+          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+        }
      }
 
      function addProperties(){
