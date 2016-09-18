@@ -94,7 +94,7 @@ function validate_filetype(fext, ftype) {
     function addProperties(isNew, type, id){
       var formdata = new FormData();
           for(var i in flist){
-            formdata.append('uploadimage[]', flist[i]);
+            if(flist[i].name)formdata.append('uploadimage[]', flist[i]);
           }
           formdata.append('title', $('#title').val());
           formdata.append('type', $('#propType').val());
@@ -122,8 +122,6 @@ function validate_filetype(fext, ftype) {
             }
             });
           }
-          
-          
     }
 
     function responsePropCallBack(response){
@@ -309,13 +307,9 @@ function validate_filetype(fext, ftype) {
     }
     
     function editProperties(id, title, location, price, img, type){
-        var formdata = new FormData();
             deletedImage=[];
             $('#propType').val(type).change();
             $('#btn-prop').val('UPDATE PROPERTY');
-            for(var i in flist){
-              formdata.append('uploadimage[]', flist[i]);
-            }
             
         var img=img.split(','), desc=villbizApp.getData(id);
             imageAvailable=img.slice();
@@ -331,10 +325,6 @@ function validate_filetype(fext, ftype) {
             $('#prop-img-list').removeClass('hide').html(imgList);
             $('#create-properties-form').unbind('submit').submit(function(evt){
                   evt.stopPropagation();
-                  var formdata = new FormData();
-                  for(var i in flist){
-                    formdata.append('uploadimage[]', flist[i]);
-                  }
                   addProperties(false, type, id);
                   return false;
               });
