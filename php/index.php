@@ -107,7 +107,7 @@ require 'routes.php';
     $loginInfo = json_decode(file_get_contents("php://input")); 
     $password=md5($loginInfo->password);
     try {
-    $sql = "select id,name,email,mobile,isAdmin from user_signup where email='".$loginInfo->userName."' || mobile='".$loginInfo->userName."' && password='".$password."' && status='ACTIVE'";
+    $sql = "select id,name,email,mobile,isAdmin,tokenKey from user_signup where email='".$loginInfo->userName."' || mobile='".$loginInfo->userName."' && password='".$password."' && status='ACTIVE'";
     $db = getConnection();
     $stmt = $db->query($sql);
     $users = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -205,6 +205,9 @@ require 'routes.php';
      function addUsers(){
        $userInfo = json_decode(file_get_contents("php://input"));
         $ip=getRealIpAddr();
+        $userId=getGUID();
+        $otp_code = mt_rand(10, 1100000);
+        $apiKey = md5(uniqid(rand(), true));
         try {
           if($userInfo && $userInfo->name && $userInfo->password && $userInfo->mobile){
            $name=$userInfo->name;
@@ -214,9 +217,7 @@ require 'routes.php';
            $isAdmin=$userInfo->isAdmin;
            $tokenKey=null;
            $icon=null;
-           $userId=getGUID();
-           $otp_code = mt_rand(10, 1100000);
-            $sql="insert into user_signup(id,name,email,mobile,password,isAdmin,created_date,modified_date,ip,status) values ('".$userId."' ,'".$name."' ,'".$email."' ,'".$mobile."','".$password."','".$isAdmin."','".date("Y-m-d h:i:s")."','".date("Y-m-d h:i:s")."','".$ip."','INACTIVE')";
+           $sql="insert into user_signup(id,name,email,mobile,password,isAdmin,tokenKey,created_date,modified_date,ip,status) values ('".$userId."' ,'".$name."' ,'".$email."' ,'".$mobile."','".$password."','".$isAdmin."','".$apiKey."','".date("Y-m-d h:i:s")."','".date("Y-m-d h:i:s")."','".$ip."','INACTIVE')";
              $db = getConnection();
              $result = $db->query($sql);
              $sqlOtp="insert into mobileotp(id,otp,mobile,status) values ('".$userId."' ,'".$otp_code."','".$mobile."','ACTIVE')";
@@ -228,7 +229,10 @@ require 'routes.php';
            echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
          }
         } catch (Exception $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
+          $rollBack="delete from user_signup where id='".$userId."';delete from mobileotp where id='".$userId."'";
+          $db = getConnection();
+          $result = $db->query($rollBack);
           echo '{"info":{"message":"'.$e->getMessage().'","status":false}}';
         }
      }
@@ -236,7 +240,7 @@ require 'routes.php';
           $otp_code = mt_rand(10, 1100000);
           sendSMS($mobile, $otp_code, true);
      }
-     function sendSMS($mobile=null, $otp=null, $isReSent)
+     function sendSMS($mobile, $otp, $isReSent)
       {
         try {
           if($isReSent){
@@ -254,7 +258,7 @@ require 'routes.php';
           curl_close($ch);
           return "A SMS SENT SUCCESSFULLY TO ".$mobile;
         } catch (Exception $e) {
-          echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
+          echo "Error in sms sent ".$e->getMessage();
         }
         
       }
