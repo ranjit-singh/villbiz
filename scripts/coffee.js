@@ -1,3 +1,4 @@
+var type=docCookies.getItem('type');
 $(document).ready(function(){
     villbizApp.initialize();
     $('select').material_select();
@@ -21,7 +22,8 @@ $(document).ready(function(){
         $(".tile-list-box").removeClass('property-list-view');
       }
     });
-    var type=docCookies.getItem('type');
+
+    
      switch(type){
             case 'coffee': {
                         $("#properties, #mob-properties").closest('li').addClass('active').siblings().removeClass('active');
@@ -50,11 +52,35 @@ $(document).ready(function(){
                         break;
                       }
       }
-      function successCallBack(resp){
+    $('#searchProp').unbind('click').click(function(e){
+      e.stopPropagation();
+      searchPropertiesByPage(false);
+    });
+    $('#searchByIdFrm').unbind('submit').submit(function(e){
+      e.stopPropagation();
+      searchPropertiesByPage(true);
+      return false;
+    });
+    function searchPropertiesByPage(isSearchById){
+       var locObj={}, type='/null';
+        if(isSearchById){
+          locObj.flag=false;
+          locObj.searchId=$('#searchId').val();
+        }
+        else{
+          locObj.flag=true;
+          locObj.locationList=$('#locationList').val();
+          type='/'+$('#propType').val();
+        }
+        villbizApp.callPost('/php/search'+type, JSON.stringify(locObj), successCallBack);
+    }
+
+    function successCallBack(resp){
         resp=JSON.parse(resp);
-        $('#prop-name-count').html(''+villbizApp.properties[type]+' - <span>'+resp.prop.length+' Items</span>');
+        if(resp.status && resp.result.length > 0){
+           $('#prop-name-count').html(villbizApp.properties[resp.result[0].type]+' - <span>'+resp.result.length+' Items</span>');
          var htmlList='';
-             resp.prop.forEach(function(value, indx, arr){
+             resp.result.forEach(function(value, indx, arr){
                var imgList=(value.image).split(',');
                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
                       +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
@@ -65,6 +91,6 @@ $(document).ready(function(){
                     +'<a href="javascript:showPropDetail(\''+value.sno+'\', \''+value.title+'\',\''+value.description+'\', \''+value.cost+'\', \''+value.type+'\', \''+value.image+'\', \''+value.location+'\');" class="waves-effect waves-light btn modal-trigger">View Detail</a></div></div></div></div></div>';
              });
              $('#properties-list').html(htmlList);
+        }
       }
 });
-

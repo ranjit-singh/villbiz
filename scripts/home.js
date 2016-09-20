@@ -1,9 +1,15 @@
+var  url='views/home/main.html';
 $(document).ready(function(){
         villbizApp.initialize();
         $( "#header" ).load( "views/home/header.html", function(e){
-        var type=docCookies.getItem('type'), url='views/home/main.html';
+        var type=docCookies.getItem('type');
         $("#main").closest('li').addClass('active').siblings().removeClass('active');
-        switch(type){
+        showActiveTab(type);
+        });
+      $( "#footer" ).load( "views/home/footer.html" );
+  });
+function showActiveTab(type){
+  switch(type){
                 case 'coffee': {
                             url='views/properties/coffee.html';
                             $("#properties").closest('li').addClass('active').siblings().removeClass('active');
@@ -45,7 +51,6 @@ $(document).ready(function(){
                             break;
                           }
         }
-        
         $( "#mainViewContainer" ).load(url, function(){
         $('.slider').slider({full_width: true});
         $('select').material_select();
@@ -57,9 +62,7 @@ $(document).ready(function(){
             $('.view-detail-slider').slider('pause');
         });
       });
-        });
-      $( "#footer" ).load( "views/home/footer.html" );
-  });
+}
 function searchProperties(isSearchById){
   var locObj={}, type='/null';
       if(isSearchById){
@@ -74,15 +77,18 @@ function searchProperties(isSearchById){
       
       villbizApp.callPost('/php/search'+type, JSON.stringify(locObj), function(resp){
         resp=JSON.parse(resp);
-         $( "#mainViewContainer" ).load( "views/properties/coffee.html", function(){
+        if(resp.status && resp.result.length > 0){
+            docCookies.setItem('type', resp.result[0].type);
+            showActiveTab(resp.result[0].type);
+               $( "#mainViewContainer" ).load( "views/properties/coffee.html", function(){
             var htmlList='';
-             resp.result.forEach(function(value, indx, arr){
-               var imgList=(value.image).split(',');
-               htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
+                resp.result.forEach(function(value, indx, arr){
+            var imgList=(value.image).split(',');
+                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
                       +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
                       +'<div class="card-content"><div class="card-content-body"><div class="property-title font-600">'+value.title+'</div>'
-                    +'<div class="property-divider"></div><div class="property-location"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
-                    +'<div class="property-price font-600"><i class="jif-rupee"></i><span>'+value.cost+'</span></div></div>'
+                    +'<div class="property-divider"></div><div class="property-location text-ellipsis"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
+                    +'<div class="property-price font-600 text-ellipsis"><i class="jif-rupee"></i><span>'+value.cost+'</span></div></div>'
                     +'<div class="card-content-footer"><div class="property-detail-btn">'
                     +'<a href="javascript:showPropDetail(\''+value.sno+'\', \''+value.title+'\',\''+value.description+'\', \''+value.cost+'\', \''+value.type+'\', \''+value.image+'\', \''+value.location+'\');" class="waves-effect waves-light btn modal-trigger">View Detail</a></div></div></div></div></div>';
              });
@@ -105,6 +111,7 @@ function searchProperties(isSearchById){
              }
              
          });
+        }
       });
       return false;
 }

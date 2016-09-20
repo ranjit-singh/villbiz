@@ -211,6 +211,6 @@ function loadPrice(evt){
         $('.logedin-user').addClass('hide');
         docCookies.removeItem('PHPSESSID');
         docCookies.removeItem('uid');
-        location.replace('/villbiz');
+        location.replace('/');
       });
     }

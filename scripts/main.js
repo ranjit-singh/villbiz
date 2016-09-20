@@ -11,7 +11,4 @@ $(document).ready(function(){
 	          $('select').material_select();
           });
         });
-      // villbizApp.callGet('/php/properties', function(resp){
-      //    console.log(resp);
-      // });
   });

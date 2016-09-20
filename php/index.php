@@ -57,7 +57,7 @@ require 'routes.php';
           $stmt = $db->query($sql);
           $properties = $stmt->fetchAll(PDO::FETCH_OBJ);
           $db = null;
-          echo '{"prop": ' . json_encode($properties) . ', "status":true}';
+          echo '{"result": ' . json_encode($properties) . ', "status":true}';
         } catch (PDOException $e) {
           //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
@@ -823,7 +823,12 @@ require 'routes.php';
    try {
      if($searchInfo->flag){
        $location=implode("','",$searchInfo->locationList);
-       $sql="select * from properties where type='".$id."' && location in('".$location."' && status='ACTIVE') order by sno asc";
+       if(count($searchInfo->locationList) > 0){
+        $sql="select * from properties where type='".$id."' && location in('".$location."') && status='ACTIVE' order by sno asc";
+        }else{
+          $sql="select * from properties where type='".$id."' && status='ACTIVE' order by sno asc";
+        }
+       
        $db = getConnection();
        $stmt = $db->query($sql);
        $result = $stmt->fetchAll(PDO::FETCH_OBJ);

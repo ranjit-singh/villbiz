@@ -19,13 +19,13 @@
 								</select>
 							</div>
 							<div class="input-field col s12 m2 l2 margin-top-15 no-padding quick-prop-btn">
-								<button class="waves-effect waves-light btn bg-green" id="searchProp" onclick="searchProperties();">
+								<button class="waves-effect waves-light btn bg-green" id="searchProp">
 					                <i class="jif-search-1"></i>
 					             </button>
 							</div>
 						</div>
 						<div class="col s12 l5 search-ad-id-block">
-						<form class="col s12 no-padding" name="searchByIdForm" onsubmit="return searchProperties(true);" method="post">
+						<form id="searchByIdFrm" class="col s12 no-padding" name="searchByIdForm" method="post">
 							<div class="input-field margin-top-15 quick-ad-id">
 								<button class="waves-effect waves-light btn bg-green">
 					                <i class="jif-search-1" style="font-size: 20px;line-height: 36px;"></i>
@@ -123,6 +123,10 @@
 								    po.src = 'https://apis.google.com/js/platform.js';
 								    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
 								  })();
+								  function fbshareCurrentPage()
+    {window.open("https://www.facebook.com/sharer/sharer.php?u="+escape('http://villbiz.com/detail.html?aid=27')+"&t="+document.title, '', 
+    'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+    return false; }
 								</script>
 							</div>
 						</div>

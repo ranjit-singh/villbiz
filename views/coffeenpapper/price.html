@@ -95,7 +95,7 @@
 				<h4 class="text-center">Log In</h4>
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" id="loginusername" required>
+			          <input type="number" class="validate no-margin" id="loginusername" required onkeypress="if(this.value.length >11) return false;">
 			          <label for="loginusername">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 		      	</div>
@@ -130,7 +130,7 @@
 				<h4 class="text-center">Reset Password</h4>
 				<div class="row">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" id="forgot-password-mobile" required>
+			          <input type="number" class="validate no-margin" id="forgot-password-mobile" required onkeypress="if(this.value.length >11) return false;">
 			          <label for="forgot-password-mobile">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 			    </div>
@@ -241,7 +241,7 @@
 			    </div>
 		      	<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
-			          <input type="number" class="validate no-margin" name="mobilenumber" required id="mobilenumber">
+			          <input type="number" class="validate no-margin" name="mobilenumber" required id="mobilenumber" onkeypress="if(this.value.length >11) return false;">
 			          <label for="mobilenumber">Mobile Number<span class="text-red">*</span></label>
 			        </div>
 		      	</div>

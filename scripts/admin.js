@@ -302,7 +302,7 @@ function validate_filetype(fext, ftype) {
     function logOut(){
       villbizApp.callGet('/php/logout', function(resp){
         docCookies.removeItem('PHPSESSID');
-        location.replace('/villbiz/admin');
+        location.replace('/admin');
       });
     }
     
