@@ -263,7 +263,7 @@ hr {
 }
 .banner-slider .banner-text {
 	padding: 0 10px;
-	width: 450px !important;
+	width: 500px !important;
 	background: rgba(255,255,255,0.6);
 	border: 1px solid #ccc;
 }
@@ -306,7 +306,14 @@ hr {
 	right: 33% !important;
 	width: 550px !important;
 }
-
+.banner-slider .banner-text h3 {
+	font-size: 35px;
+	margin-bottom: 0;
+}
+.banner-slider .banner-text h5 {
+	font-size: 18px;
+	margin-top: 5px;
+}
 .slides.banner_slider {
 	height: 600px !important;
 }
