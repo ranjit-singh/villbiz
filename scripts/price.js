@@ -2,7 +2,7 @@ $(document).ready(function(){
 	villbizApp.initialize();
 	$(".dropdown-button").dropdown({hover: true});
 	$('.modal-trigger').leanModal();
-  if(docCookies.getItem('PHPSESSID')){
+  if(docCookies.getItem('PHPSESSID') && docCookies.getItem('uid')){
     $('.logedin-user').removeClass('hide');
     $('.pricing-emptystate').addClass('hide');
     $('#login-required').fadeIn('500');
@@ -13,6 +13,8 @@ $(document).ready(function(){
     });
     init();
   }else{
+    docCookies.removeItem('PHPSESSID');
+    docCookies.removeItem('uid');
     $('#login-required').fadeOut('500');
     $('#login-modal').openModal();
   }

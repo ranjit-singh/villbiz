@@ -78,7 +78,7 @@ function searchProperties(isSearchById){
       villbizApp.callPost('/php/search'+type, JSON.stringify(locObj), function(resp){
         resp=JSON.parse(resp);
         if(resp.status && resp.result.length > 0){
-            docCookies.setItem('type', resp.result[0].type);
+            //docCookies.setItem('type', resp.result[0].type);
             showActiveTab(resp.result[0].type);
                $( "#mainViewContainer" ).load( "views/properties/coffee.html", function(){
             var htmlList='';

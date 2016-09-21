@@ -126,7 +126,7 @@ function validate_filetype(fext, ftype) {
 
     function responsePropCallBack(response){
       response=JSON.parse(response);
-      var propList=response.prop, htmlList='';
+      var propList=response.result, htmlList='';
       propList.forEach(function(value,index,arr){
         var imgArray=(value.image).split(','), img_thumb='';
         for(var i in imgArray){
