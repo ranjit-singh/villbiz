@@ -296,20 +296,23 @@ function validate_filetype(fext, ftype) {
       +'<a href="javascript:deleteNews(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
       });
       $('#newsList').html(htmlList);
-       $('.modal-trigger').leanModal();
+      $('.modal-trigger').leanModal();
     }
 
     function getContacts(){
-      villbizApp.callGet('/php/contactus', function(response){
+      villbizApp.callGet('/php/contactus', contactCallBack);
+    }
+
+    function contactCallBack(response){
         response=JSON.parse(response);
         var htmlList='';
         response.contact.forEach(function(value,index,arr){
-          htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.email+'</td><td>'+value.mobile+'</td><td>'+value.message+'</td></tr>';
+          htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.email+'</td><td>'+value.mobile+'</td>'
+          +'<td>'+value.message+'</td><td>'+value.created_date+'</td><td class="text-center admin-action"><a href="javascript:deleteContact(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
         });
-          $('#contactusList').html(htmlList);
-      });
+        $('#contactusList').html(htmlList);
+        $('.modal-trigger').leanModal();
     }
-
     function logOut(){
       villbizApp.callGet('/php/logout', function(resp){
         docCookies.removeItem('PHPSESSID');
@@ -457,6 +460,17 @@ function validate_filetype(fext, ftype) {
         resp=JSON.parse(resp);
         $('#delete-property-popup').closeModal();
         if(resp.info.status)villbizApp.callGet('/php/properties/'+type, responsePropCallBack);
+      });
+     });
+   }
+
+   function deleteContact(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/contactus/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/contactus', contactCallBack);
       });
      });
    }
