@@ -17,6 +17,7 @@ $app->get('/properties/search/:type','propertiesSearch');
 $app->get('/location/:type','getLocation');
 $app->get('/userprofile/:id','getUserProfile');
 $app->get('/verifyresetpasswordotp/:mobile/:otp','verifyResetPasswordOtp');
+$app->get('/contactus','getContact');
 
 $app->post('/createuser', 'addUsers');
 $app->post('/login','userLogin');
@@ -41,6 +42,7 @@ $app->delete('/pepper/price/:id','deletePepperPrice');
 $app->delete('/close/price/:id','deleteClosePrice');
 $app->delete('/news/:id','deleteNews');
 $app->delete('/properties/image/:id/:imagename','deleteImage');
+$app->delete('/contactus/:id','deleteContact');
 
 
 $app->run();

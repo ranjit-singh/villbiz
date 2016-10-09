@@ -205,6 +205,23 @@ require 'routes.php';
         echo '{"error":{"text":'. $e->getMessage() .'}}';
        }
   }
+
+  function getContact(){
+      try {
+          if(checkValidate()){
+            $sql = "select * FROM contactus";
+            $db = getConnection();
+            $stmt = $db->query($sql);
+            $contact = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+            echo '{"contact": ' . json_encode($contact) . ', "status":true}';
+          }
+        } catch(PDOException $e) {
+        //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+        echo '{"error":{"text":'. $e->getMessage() .'}}';
+       }
+  }
+
  function addContactus(){
   $contactInfo = json_decode(file_get_contents("php://input"));
   $ip=getRealIpAddr();
@@ -790,6 +807,23 @@ require 'routes.php';
    }
  }
  }
+
+ function deleteContact($id){
+  if(checkValidate()){
+   try {
+     $sql="delete from contactus where id='".$id."'";
+     $db = getConnection();
+     $result = $db->query($sql);
+     $db = null;
+     $success = '{"info":{"message":"Contact Deleted Successfully.","status":true}}';
+     echo $success;
+   } catch (Exception $e) {
+     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+   }
+ }
+ }
+
  function deleteImage($id, $imagename){
   if(checkValidate()){
    try {

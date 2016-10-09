@@ -1186,7 +1186,7 @@ nav ul a:hover {
 .price-tab th {
 	background-color: #939393;
 	color: #fff;
-	text-align: center;
+	text-align: left;
 	border-radius: 0;
 }
 .price-tab th+th, .price-tab td+td {

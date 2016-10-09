@@ -42,7 +42,7 @@ function validate_filetype(fext, ftype) {
     $(document).ready(function(){
         villbizApp.initialize();
         if(!docCookies.getItem('PHPSESSID')){
-          //location.replace('/villbiz/admin');
+          location.replace('/villbiz/admin');
         }
         $('select').material_select();
         $('ul.tabs').tabs();
@@ -297,6 +297,17 @@ function validate_filetype(fext, ftype) {
       });
       $('#newsList').html(htmlList);
        $('.modal-trigger').leanModal();
+    }
+
+    function getContacts(){
+      villbizApp.callGet('/php/contactus', function(response){
+        response=JSON.parse(response);
+        var htmlList='';
+        response.contact.forEach(function(value,index,arr){
+          htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.email+'</td><td>'+value.mobile+'</td><td>'+value.message+'</td></tr>';
+        });
+          $('#contactusList').html(htmlList);
+      });
     }
 
     function logOut(){
