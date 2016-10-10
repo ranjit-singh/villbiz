@@ -263,7 +263,7 @@ hr {
 }
 .banner-slider .banner-text {
 	padding: 0 10px;
-	width: 500px !important;
+	width: 400px !important;
 	background: rgba(255,255,255,0.6);
 	border: 1px solid #ccc;
 }
@@ -276,7 +276,7 @@ hr {
 	left: 20px !important;
 }
 .banner-slider .banner-text.banner-pos-left-top {
-	top: 15% !important;
+	top: 35% !important;
 	bottom: auto !important;
 	left: 15% !important;
 }
@@ -285,7 +285,7 @@ hr {
 	bottom: auto !important;
 	left: auto !important;
 	right: 15% !important;
-	width: 550px !important;
+	width: 400px !important;
 }
 .banner-slider .banner-text.banner-pos-right-botm {
 	top: auto !important;
@@ -305,6 +305,12 @@ hr {
 	left: auto !important;
 	right: 33% !important;
 	width: 550px !important;
+}
+.banner-slider .banner-text.banner-pos-right-right {
+	top: auto !important;
+    bottom: 19% !important;
+    right: 1% !important;
+    left: auto !important;
 }
 .banner-slider .banner-text h3 {
 	font-size: 35px;
@@ -825,11 +831,11 @@ nav ul a:hover {
 
 @media only screen and (max-width: 992px) {
 	.banner-slider .banner-text.banner-pos-left-bottom {
-		width: 550px !important;
+		/*width: 550px !important;*/
 		left: 25px !important;
 	}
 	.banner-slider .banner-text.banner-pos-center-center {
-		width: 550px !important;
+		/*width: 550px !important;*/
 		right: 25px !important;
 	}
 	/*.banner-slider .banner-text.banner-pos-right-botm {
@@ -957,7 +963,7 @@ nav ul a:hover {
 		margin: 15px 0 0;
 	}
 	.banner-slider .slides li .caption h5{
-		font-size: 20px;
+		font-size: 16px;
 		margin: 5px 0 10px;
 	}
 	.banner-slider .banner-text.banner-pos-left-bottom,
@@ -967,23 +973,11 @@ nav ul a:hover {
 	.banner-slider .banner-text.banner-pos-center-bottom,
 	.banner-slider .banner-text.banner-pos-right-bottom,
 	.banner-slider .banner-text.banner-pos-right-botm {
-		width: 90% !Important;
+		/*width: 90% !Important;*/
 		left: 5% !Important;
 		right: 5% !Important;
 
 	}
-	/*.banner-slider .banner-text.banner-pos-left-bottom {
-		width: 550px !important;
-		left: 25px !important;
-	}
-	.banner-slider .banner-text.banner-pos-center-center {
-		width: 550px !important;
-		right: 25px !important;
-	}
-	.banner-slider .banner-text.banner-pos-center-bottom {
-		width: 550px !important;
-		right: 30px !important;
-	}*/
 	.villbiz-blocks {
 		padding: 0;
 	}
@@ -1012,6 +1006,18 @@ nav ul a:hover {
 @media only screen and (max-width: 400px) {
 	.search-ad-id {
 		width: 69% !important;
+	}
+	.banner-slider .banner-text.banner-pos-left-bottom,
+	.banner-slider .banner-text.banner-pos-left-top,
+	.banner-slider .banner-text.banner-pos-left-bottom,
+	.banner-slider .banner-text.banner-pos-center-center,
+	.banner-slider .banner-text.banner-pos-center-bottom,
+	.banner-slider .banner-text.banner-pos-right-bottom,
+	.banner-slider .banner-text.banner-pos-right-botm {
+		width: 90% !important;
+		left: 5% !important;
+		right: 5% !important;
+
 	}
 }
 
@@ -1236,7 +1242,7 @@ nav ul a:hover {
 .logedinuser-dropdown {
 	top: 20px !important;
     width: 125px !important;
-    left: auto !Important;
+    left: auto !important;
 }
 .logedinuser-dropdown i {
 	margin-right: 5px;
@@ -1295,7 +1301,7 @@ nav ul a:hover {
 }
 .login-box h4{
 	font-size: 32px;
-	margin-bottom: 20px !Important;
+	margin-bottom: 20px !important;
 }
 .login-box .btn {
 	height: 46px;
@@ -1576,7 +1582,7 @@ nav ul a:hover {
 	    position: absolute !important;
 	    top: 270px;
 	    right: 20px !important;
-	    width: auto !Important;
+	    width: auto !important;
 	}
 	.property-name h5 {
 		padding: 5px;
@@ -2038,7 +2044,7 @@ nav ul a:hover {
 		display: flex !important;
 	}
 	.admin-tabs .tab {
-		width: 20% !important;
+		width: auto !important;
 	}
 }
 @media only screen and (max-width: 992px) {
@@ -2213,4 +2219,9 @@ animation: spin 1.5s linear infinite;
 }
 .gplus-icon > div, .gplus-icon > div iframe {
 	width: 70px !important;
+}
+.prop-close-link {
+	position: absolute;
+	top: 5px;
+	right: 5px;
 }
