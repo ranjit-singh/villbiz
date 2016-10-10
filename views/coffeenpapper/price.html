@@ -317,7 +317,79 @@
 	<div class="modal-content login-box">
 		<h4 class="text-center text-green">Account Settings</h4>
 		<i class="jif-cancel-1 modal-close-btn modal-close"></i>
-		<form class="col s12">
+
+
+
+		<div class="row">
+			<div class="col s12">
+				<ul class="tabs">
+					<li class="tab col s3"><a href="#account-setting">Account Setting</a></li>
+					<li class="tab col s3"><a class="active" href="#test2">Change Password</a></li>
+				</ul>
+			</div>
+			<div id="test1" class="col s12">
+				<form class="col s12">
+					<div class="col s12 no-padding">
+						<div class="row margin-bottom-10">
+					        <div class="input-field col s12">
+					          <input type="text" class="validate no-margin" id="username" required>
+					          <label for="username">Name<span class="text-red">*</span></label>
+					        </div>
+					    </div>
+				      	<div class="row margin-bottom-10">
+					        <div class="input-field col s12">
+					          <input type="number" id="mobilenumber" class="validate no-margin" readonly>
+					          <label for="mobilenumber">Mobile Number</label>
+					        </div>
+				      	</div>
+				      	<div class="row margin-bottom-10">
+					        <div class="input-field col s12">
+					          <input type="email" id="useremail" class="validate no-margin">
+					          <label for="useremail">Email</label>
+					        </div>
+				      	</div>
+				      	<div class="row margin-bottom-10">
+					      	<div class="input-field col s12">
+					      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+					      	</div>
+				      	</div>
+					</div>
+				</form>
+			</div>
+			<div id="test2" class="col s12">
+				<form class="col s12">
+					<div class="col s12 no-padding">
+				      	<div class="row">
+					        <div class="input-field col s12">
+					          <input type="password" class="validate no-margin" required>
+					          <label for="password">Current Password<span class="text-red">*</span></label>
+					        </div>
+				      	</div>
+				      	<div class="row">
+					        <div class="input-field col s12">
+					          <input type="password" class="validate no-margin" required>
+					          <label for="password">New Password<span class="text-red">*</span></label>
+					        </div>
+				      	</div>
+				      	<div class="row">
+					        <div class="input-field col s12">
+					          <input type="password" class="validate no-margin" required>
+					          <label for="confirmpassword">Re-type New Password<span class="text-red">*</span></label>
+					        </div>
+				      	</div>
+				      	<div class="row margin-bottom-10">
+					      	<div class="input-field col s12">
+					      		<button class="waves-effect waves-light btn bg-green block-display col s12 l6 offset-l3">Submit</button>
+					      	</div>
+				      	</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+
+
+		<form class="col s12 hide">
 			<div class="col s12 no-padding">
 				<div class="row margin-bottom-10">
 			        <div class="input-field col s12">
@@ -364,4 +436,6 @@
 		</form>
 	</div>
 </div>
+
+
 <script src="scripts/price.js"></script>
