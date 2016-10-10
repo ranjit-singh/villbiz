@@ -5,6 +5,7 @@ $(document).ready(function(){
     $('ul.tabs').tabs();
     $('.modal-trigger').leanModal();
     $('#propType').change(function(){
+      type=this.value;
       villbizApp.callGet('/php/location/'+this.value, function(resp){
         resp=JSON.parse(resp);
     var htmlList='<option value="" disabled selected>Search Location</option>';
@@ -77,9 +78,11 @@ $(document).ready(function(){
 
     function successCallBack(resp){
         resp=JSON.parse(resp);
+        var htmlList='';
+        document.getElementById('searchByIdFrm').reset();
+        $('#prop-name-count').html(villbizApp.properties[type]+' - <span>'+resp.result.length+' Items</span>');
         if(resp.status && resp.result.length > 0){
-           $('#prop-name-count').html(villbizApp.properties[resp.result[0].type]+' - <span>'+resp.result.length+' Items</span>');
-         var htmlList='';
+             $('#prop-name-count').html(villbizApp.properties[resp.result[0].type]+' - <span>'+resp.result.length+' Items</span>');
              resp.result.forEach(function(value, indx, arr){
                var imgList=(value.image).split(',');
                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
@@ -89,8 +92,8 @@ $(document).ready(function(){
                     +'<div class="property-price font-600 text-ellipsis"><i class="jif-rupee"></i>&nbsp;<span>'+value.cost+'</span></div></div>'
                     +'<div class="card-content-footer"><div class="property-detail-btn">'
                     +'<a href="javascript:showPropDetail(\''+value.sno+'\', \''+value.title+'\',\''+value.description+'\', \''+value.cost+'\', \''+value.type+'\', \''+value.image+'\', \''+value.location+'\');" class="waves-effect waves-light btn modal-trigger">View Detail</a></div></div></div></div></div>';
-             });
-             $('#properties-list').html(htmlList);
+             }); 
         }
+        $('#properties-list').html(htmlList);
       }
 });

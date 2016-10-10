@@ -52,14 +52,14 @@ require 'routes.php';
 
   function getProperties($type){
         try {
-          $sql = "select sno,id,title,type,cost,location,description,image from properties where type='".$type."' && status='ACTIVE' order by sno asc";
+          $sql = "select sno,id,title,type,cost,location,description,image from properties where type='".$type."' && status='ACTIVE' order by sno desc";
           $db = getConnection();
           $stmt = $db->query($sql);
           $properties = $stmt->fetchAll(PDO::FETCH_OBJ);
           $db = null;
           echo '{"result": ' . json_encode($properties) . ', "status":true}';
         } catch (PDOException $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
 
@@ -75,7 +75,7 @@ require 'routes.php';
           echo '{"price": ' . json_encode($properties) . ', "status":true}';
           }
         } catch (PDOException $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
   }
@@ -90,7 +90,7 @@ require 'routes.php';
           echo '{"price": ' . json_encode($properties) . ', "status":true}';
         }
         } catch (PDOException $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
   }
@@ -106,7 +106,7 @@ require 'routes.php';
           echo '{"price": ' . json_encode($properties) . ', "status":true}';
           }
         } catch (PDOException $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
   }
@@ -122,7 +122,7 @@ require 'routes.php';
           echo '{"news": ' . json_encode($properties) . ', "status":true}';
         }
         } catch (PDOException $e) {
-          //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+          error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
           echo '{"error":{"text":'. $e->getMessage() .'}}';
         }
   }
@@ -155,7 +155,7 @@ require 'routes.php';
       echo '{"users": "Invalid Username or Password!", "status":false}';
     }
     } catch(PDOException $e) {
-    //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+    error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
     echo '{"error":{"text":'.$e->getMessage().'}}';
    }
   }
@@ -177,7 +177,7 @@ require 'routes.php';
   function getUsers() {
         try {
           if(checkValidate()){
-          $sql = "SELECT id,name,email FROM user_signup ORDER BY id DESC";
+          $sql = "SELECT id,name,email,mobile,isAdmin,created_date FROM user_signup ORDER BY created_date DESC";
           $db = getConnection();
           $stmt = $db->query($sql);
           $users = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -185,7 +185,7 @@ require 'routes.php';
           echo '{"users": ' . json_encode($users) . ', "status":true}';
         }
         } catch(PDOException $e) {
-        //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+        error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
         echo '{"error":{"text":'. $e->getMessage() .'}}';
        }
   }
@@ -201,7 +201,7 @@ require 'routes.php';
             echo '{"profile": ' . json_encode($profile[0]) . ', "status":true}';
           }
         } catch(PDOException $e) {
-        //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+        error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
         echo '{"error":{"text":'. $e->getMessage() .'}}';
        }
   }
@@ -209,7 +209,7 @@ require 'routes.php';
   function getContact(){
       try {
           if(checkValidate()){
-            $sql = "select * FROM contactus";
+            $sql = "select * FROM contactus where order by created_date desc";
             $db = getConnection();
             $stmt = $db->query($sql);
             $contact = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -217,7 +217,7 @@ require 'routes.php';
             echo '{"contact": ' . json_encode($contact) . ', "status":true}';
           }
         } catch(PDOException $e) {
-        //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+        error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
         echo '{"error":{"text":'. $e->getMessage() .'}}';
        }
   }
@@ -241,7 +241,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
  }
@@ -400,7 +400,7 @@ require 'routes.php';
           echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
  }
@@ -447,7 +447,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -474,7 +474,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -500,7 +500,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -525,7 +525,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -547,7 +547,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -606,7 +606,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
    } catch (Exception $e) {
-    //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+    error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -633,7 +633,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -659,7 +659,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -684,7 +684,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -706,7 +706,7 @@ require 'routes.php';
        echo '{"info":{"message":"Mandatory fields are  missing.","status":false}}';
      }
     } catch (Exception $e) {
-      //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+      error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
       echo '{"info":{"message":"Error in api call","status":'.$e->getMessage().'}}';
     }
   }
@@ -738,7 +738,7 @@ require 'routes.php';
       $success = '{"info":{"message":"Property Deleted Successfully.","status":true}}';
       echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -754,7 +754,7 @@ require 'routes.php';
      $success = '{"info":{"message":"Coffee Price Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -770,7 +770,7 @@ require 'routes.php';
      $success = '{"info":{"message":"Pepper Price Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -786,7 +786,7 @@ require 'routes.php';
      $success = '{"info":{"message":"Close Price Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -802,7 +802,7 @@ require 'routes.php';
      $success = '{"info":{"message":"News Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -818,7 +818,25 @@ require 'routes.php';
      $success = '{"info":{"message":"Contact Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
+     echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
+   }
+ }
+ }
+
+ function deleteUser($id){
+  if(checkValidate()){
+   try {
+     $sql="delete from user_signup where id='".$id."'";
+     $db = getConnection();
+     $result = $db->query($sql);
+     $sql="delete from mobileotp where id='".$id."'";
+     $result = $db->query($sql);
+     $db = null;
+     $success = '{"info":{"message":"User Deleted Successfully.","status":true}}';
+     echo $success;
+   } catch (Exception $e) {
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -846,7 +864,7 @@ require 'routes.php';
      $success = '{"info":{"message":"Image Deleted Successfully.","status":true}}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }
@@ -878,7 +896,7 @@ require 'routes.php';
      $success = '{"result":'.json_encode($result).',"status":true}';
      echo $success;
    } catch (Exception $e) {
-     //error_log($e->getMessage(), 3, '/var/tmp/phperror.log'); //Write error log
+     error_log($e->getMessage(), 3, 'phperror.log'); //Write error log
      echo '{"info":{"message":"Mandatory fields are  missing.","status":"Exception'.$e->getMessage().'"}}';
    }
  }

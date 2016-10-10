@@ -41,8 +41,8 @@ function validate_filetype(fext, ftype) {
 })();
     $(document).ready(function(){
         villbizApp.initialize();
-        if(!docCookies.getItem('PHPSESSID')){
-          location.replace('/villbiz/admin');
+        if(!docCookies.getItem('PHPSESSID') && !docCookies.getItem('role')==="admin"){
+          location.replace('/admin');
         }
         $('select').material_select();
         $('ul.tabs').tabs();
@@ -313,6 +313,21 @@ function validate_filetype(fext, ftype) {
         $('#contactusList').html(htmlList);
         $('.modal-trigger').leanModal();
     }
+
+    function getUsers(){
+       villbizApp.callGet('/php/users', userCallBack);
+    }
+
+    function userCallBack(response){
+      response=JSON.parse(response);
+        var htmlList='';
+        response.users.forEach(function(value,index,arr){
+          htmlList+='<tr><td>'+index+'</td><td>'+value.name+'</td><td>'+value.email+'</td><td>'+value.mobile+'</td><td>'+value.isAdmin+'</td><td>'+value.created_date+'</td>'
+              +'<td><a href="javascript:deleteUser(\''+value.id+'\');" title="Delete" class="jif-trash text-red modal-trigger"></a></td></tr>';
+        });
+        $('#userList').html(htmlList);
+        $('.modal-trigger').leanModal();
+    }
     function logOut(){
       villbizApp.callGet('/php/logout', function(resp){
         docCookies.removeItem('PHPSESSID');
@@ -471,6 +486,17 @@ function validate_filetype(fext, ftype) {
         resp=JSON.parse(resp);
         $('#delete-property-popup').closeModal();
         if(resp.info.status)villbizApp.callGet('/php/contactus', contactCallBack);
+      });
+     });
+   }
+
+   function deleteUser(id){
+     $('#delete-property-popup').openModal();
+     $('#confirm-delete-prop').unbind('click').click(function(evt){
+      villbizApp.callDelete('/php/users/'+id, function(resp){
+        resp=JSON.parse(resp);
+        $('#delete-property-popup').closeModal();
+        if(resp.info.status)villbizApp.callGet('/php/users', userCallBack);
       });
      });
    }

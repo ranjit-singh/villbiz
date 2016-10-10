@@ -35,6 +35,7 @@
 					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
 					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
 					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+					<li class="tab col s3" onclick="getUsers()"><a href="#tab7">Users</a></li>
 					<li class="tab col s3" onclick="getContacts()"><a href="#tab6">Contact Us</a></li>
 				</ul>
 				<ul class="tabs admin-tabs side-nav mob-side-menu-slider admin-mob-menu" id="mobile-demo">
@@ -43,6 +44,7 @@
 					<li class="tab col s3" onclick="getPepperPrice()"><a href="#tab3">Pepper Price</a></li>
 					<li class="tab col s3" onclick="getClosePrice()"><a href="#tab4">Closing Price</a></li>
 					<li class="tab col s3" onclick="getNews()"><a href="#tab5">News</a></li>
+					<li class="tab col s3" onclick="getUsers()"><a href="#tab7">Users</a></li>
 					<li class="tab col s3" onclick="getContacts()"><a href="#tab6">Contact Us</a></li>
 				</ul>
 			</div>
@@ -423,10 +425,34 @@
 						        <th width="10%">Mobile Number</th>
 						        <th width="30%">Message</th>
 						        <th width="15%">Created Date</th>
-						        <th width="5%">Delete</th>
+						        <th width="5%">Action</th>
 							</tr>
 						</thead>
 						<tbody id="contactusList">
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section" id="tab7">
+		<div class="container">
+			<div class="row">
+				<div class="col s12 admin-table">
+					<table class="bordered highlight striped responsive-table coffee-price-table price-tab">
+						<thead>
+							<tr>
+								<th width="5%">SNo</th>
+						        <th width="25%">Name</th>
+						        <th width="25%">Email</th>
+						        <th width="15%">Mobile Number</th>
+						        <th width="10%">Account Type</th>
+						        <th width="15%">Created Date</th>
+						        <th width="5%">Action</th>
+							</tr>
+						</thead>
+						<tbody id="userList">
 							
 						</tbody>
 					</table>
