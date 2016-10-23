@@ -86,7 +86,7 @@ $(document).ready(function(){
              resp.result.forEach(function(value, indx, arr){
                var imgList=(value.image).split(',');
                htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
-                      +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
+                      +'<a href="details.php?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
                       +'<div class="card-content"><div class="card-content-body"><div class="property-title font-600">'+value.title+'</div>'
                     +'<div class="property-divider"></div><div class="property-location text-ellipsis"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
                     +'<div class="property-price font-600 text-ellipsis"><i class="jif-rupee"></i>&nbsp;<span>'+value.cost+'</span></div></div>'

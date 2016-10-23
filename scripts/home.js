@@ -86,7 +86,7 @@ function searchProperties(isSearchById){
                 resp.result.forEach(function(value, indx, arr){
             var imgList=(value.image).split(',');
                 htmlList+='<div class="property-card-container"><div class="card"><div class="card-image waves-effect waves-block waves-light">'
-                      +'<a href="detail.html?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
+                      +'<a href="details.php?aid='+value.sno+'" target="_blank"><img class="activator" src="php/upload/'+imgList[0]+'"><div class="prop-ad-id">'+value.sno+'</div></a> </div>'
                       +'<div class="card-content"><div class="card-content-body"><div class="property-title font-600">'+value.title+'</div>'
                     +'<div class="property-divider"></div><div class="property-location text-ellipsis"><span class="font-600">Location : </span><span>'+value.location+'</span></div><div class="property-divider"></div>'
                     +'<div class="property-price font-600 text-ellipsis"><i class="jif-rupee"></i><span>'+value.cost+'</span></div></div>'
@@ -146,4 +146,9 @@ function showPropDetail(aid, title,desc,cost,type,img,location){
             case 'business': $('#prop-name').html('Business');
                   break;
          }
+      var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                    po.src = 'https://apis.google.com/js/platform.js';
+                    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      $('#fb-share-iframe').attr('src', 'https://www.facebook.com/plugins/share_button.php?href=http://villbiz.com/details.php?aid='+aid+'&layout=button&size=small&mobile_iframe=true&width=59&height=20&appId=194643794309548');
+      $('#google-plus-share').attr('data-href', 'http://villbiz.com/details.php?aid='+aid);
 }

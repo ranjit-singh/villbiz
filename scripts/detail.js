@@ -52,7 +52,7 @@ $(document).ready(function(){
 			                  break;
 			       }
 			      $('#fb-share-iframe').attr('src', 'https://www.facebook.com/plugins/share_button.php?href=http://villbiz.com/detail.html?aid='+aid+'&layout=button&size=small&mobile_iframe=true&width=59&height=20&appId');
-			      $('#google-plus-share').attr('data-href', 'http://villbiz.com/details/html?aid='+aid);
+			      $('#google-plus-share').attr('data-href', 'http://villbiz.com/details.html?aid='+aid);
 		   		}
 		   });
 });

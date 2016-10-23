@@ -209,7 +209,7 @@ require 'routes.php';
   function getContact(){
       try {
           if(checkValidate()){
-            $sql = "select * FROM contactus where order by created_date desc";
+            $sql = "select * FROM contactus order by created_date desc";
             $db = getConnection();
             $stmt = $db->query($sql);
             $contact = $stmt->fetchAll(PDO::FETCH_OBJ);
